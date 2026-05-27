@@ -5,7 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Box, Button, Card, CardContent, CardMedia, CircularProgress, Container, Typography } from "@mui/material";
 import styles from "./home.module.css";
 import { RootState } from "@/redux/store";
-import { getProducts } from "@/redux/feature/product/product-action";
+import { getCatalogProducts, getSaleProducts } from "@/redux/feature/product/product-action";
 import { enqueueSnackbar } from "notistack";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks.ts";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -14,7 +14,7 @@ import { addToCart } from "@/redux/feature/cart/cart-slice";
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  const { products, totalDocuments, loading, } = useAppSelector((state: RootState) => state.productReducer);
+  const { catalogProducts, saleProducts, totalDocuments, loading } = useAppSelector((state: RootState) => state.productReducer);
   const { cart } = useAppSelector((state: RootState) => state.cartReducer);
   const { user } = useAppSelector((state: RootState) => state.authReducer);
   const [offset, setOffset] = useState(Number(process.env.NEXT_PUBLIC_PAGE_OFFSET) || 0);
@@ -22,7 +22,7 @@ export default function Home() {
   const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    if (!products.length) {
+    if (!catalogProducts?.length) {
       fetchInitialProducts();
     }
   }, []);
@@ -31,34 +31,36 @@ export default function Home() {
     try {
       setOffset(0);
 
-      await dispatch(getProducts({ limit, offset: 0, })).unwrap();
+      await dispatch(getCatalogProducts({ limit, offset: 0 })).unwrap();
+      await dispatch(getSaleProducts({ limit, offset: 0 })).unwrap();
     } catch (err: any) {
       console.log(err);
-      enqueueSnackbar(err, { variant: "warning", });
+      enqueueSnackbar(err, { variant: "warning" });
     }
   };
 
   const fetchMoreProducts = async () => {
     try {
       if (loading) return;
-      if (products.length >= totalDocuments) return;
+      if (catalogProducts.length >= totalDocuments) return;
 
       const newOffset = offset + limit;
       setOffset(newOffset);
 
-      const response = await dispatch(getProducts({ limit, offset: newOffset, })).unwrap();
+      const response = await dispatch(getCatalogProducts({ limit, offset: newOffset })).unwrap();
+      await dispatch(getSaleProducts({ limit, offset: newOffset })).unwrap();
 
       if (!response.data.length) {
         setHasMore(false);
         return;
       }
 
-      if (products.length + response.data.length >= totalDocuments) {
+      if (catalogProducts.length + response.data.length >= totalDocuments) {
         setHasMore(false);
       }
     } catch (err: any) {
       console.log(err);
-      enqueueSnackbar(err, { variant: "warning", });
+      enqueueSnackbar(err, { variant: "warning" });
     }
   };
 
@@ -99,7 +101,7 @@ export default function Home() {
 
       <Box id="scrollableDiv" className={styles.scrollWrapper}>
         <InfiniteScroll
-          dataLength={products.length}
+          dataLength={catalogProducts?.length || saleProducts?.length || 0}
           next={fetchMoreProducts}
           hasMore={hasMore}
           loader={<Box className={styles.loader}><CircularProgress size={30} /></Box>}
@@ -107,38 +109,44 @@ export default function Home() {
           scrollableTarget="scrollableDiv"
         >
           <Box className={styles.productWrapper}>
-            {products.map((product: Product) => (
-              <Card
-                key={product.uuid}
-                className={styles.card}
-                elevation={2}
-              >
-                <Box className={styles.imageWrapper}>
-                  <CardMedia
-                    component="img"
-                    image={product.image_url}
-                    alt={product.name}
-                    className={styles.image}
-                  />
-                </Box>
+            {catalogProducts && catalogProducts.map((product: Product) => {
+              const saleProduct = saleProducts ? saleProducts.find((item) => item.uuid === product.uuid) : null;
 
-                <CardContent className={styles.cardContent}
+              return (
+                <Card
+                  key={product.uuid}
+                  className={styles.card}
+                  elevation={2}
                 >
-                  <Typography className={styles.productName}>{product.name}</Typography>
-                  <Typography className={styles.description}>{product.description}</Typography>
-                  {/* <Typography className={styles.price}>Price: {product.price}</Typography>
-                  <Typography className={styles.stock}>Stock: {product.stock}</Typography> */}
+                  <Box className={styles.imageWrapper}>
+                    <CardMedia
+                      component="img"
+                      image={product.image_url}
+                      alt={product.name}
+                      className={styles.image}
+                    />
+                  </Box>
 
-                  <Button
-                    className={styles.addtocart}
-                    startIcon={<ShoppingCartIcon />}
-                    onClick={() => handleAddToCart(product)}
+                  <CardContent className={styles.cardContent}
                   >
-                    Add to Cart
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                    <Typography className={styles.productName}>{product.name}</Typography>
+                    <Typography className={styles.description}>{product.description}</Typography>
+
+                    <Typography className={styles.price}>
+                      Price: ${saleProduct?.price || 0}
+                    </Typography>
+
+                    <Button
+                      className={styles.addtocart}
+                      startIcon={<ShoppingCartIcon />}
+                      onClick={() => handleAddToCart(product)}
+                    >
+                      Add to Cart
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </Box>
         </InfiniteScroll>
       </Box>

@@ -9,6 +9,11 @@ export class CreateOrderController {
 
     @Post()
     async createOrder(@Req() req: Request, @Body() body: CreateOrderDto) {
-        return this.createOrderService.createOrder(req.user, body);
+        const { data } = await this.createOrderService.createOrder(req.user, body);
+
+        return {
+            data: data,
+            message: "Order Created Successfully",
+        };
     }
 }

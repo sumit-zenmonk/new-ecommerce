@@ -7,7 +7,7 @@ import { GetProductListingModule } from "./get-product-listing/get-product-listi
         GetProductListingModule,
         RouterModule.register([
             {
-                path: 'catalog/product',
+                path: 'sale/product',
                 children: [
                     { path: '/', module: GetProductListingModule },
                 ],

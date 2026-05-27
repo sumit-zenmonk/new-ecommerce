@@ -13,6 +13,7 @@ import { clearCartState, removeCartItem, updateCartItemQuantity, } from "@/redux
 export default function CartPage() {
     const dispatch = useAppDispatch();
     const { cart, loading } = useAppSelector((state: RootState) => state.cartReducer);
+    const { saleProducts } = useAppSelector((state: RootState) => state.productReducer);
 
     const handleRemoveItem = async (product_uuid: string) => {
         try {
@@ -80,74 +81,75 @@ export default function CartPage() {
 
             {cart && cart?.items?.length > 0 && (
                 <Box className={styles.productWrapper}>
-                    {cart.items.map((item: CartItem) => (
-                        <Card key={item.product_uuid} className={styles.card}>
-                            <Box className={styles.imageWrapper}>
-                                <CardMedia
-                                    component="img"
-                                    image={item.product?.image_url}
-                                    alt={item.product?.name}
-                                    className={styles.image}
-                                />
-                            </Box>
+                    {cart.items.map((item: CartItem) => {
+                        const saleProduct = saleProducts.find((product) => product.uuid === item.product_uuid);
 
-                            <CardContent className={styles.cardContent}>
-                                <Typography className={styles.productName}>
-                                    {item.product?.name}
-                                </Typography>
-
-                                <Typography className={styles.description}>
-                                    {item.product?.description}
-                                </Typography>
-
-
-                                <Box className={styles.placeWrapper}>
-                                    <Typography className={styles.quantity}>
-                                        Quantity: {item.quantity}
-                                    </Typography>
-                                    <Typography className={styles.stock}>
-                                        Stock:  {/*  ₹ {Number(item.product?.stock)} */}
-                                    </Typography>
-                                    <Typography className={styles.price}>
-                                        Price: {/*   ₹ {Number(item.product?.price) * item.quantity} */}
-                                    </Typography>
+                        return (
+                            <Card key={item.product_uuid} className={styles.card}>
+                                <Box className={styles.imageWrapper}>
+                                    <CardMedia
+                                        component="img"
+                                        image={item.product?.image_url}
+                                        alt={item.product?.name}
+                                        className={styles.image}
+                                    />
                                 </Box>
 
-                                <IconButton
-                                    className={styles.removeBtn}
-                                    onClick={() =>
-                                        handleRemoveItem(item.product_uuid)
-                                    }
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
-                            </CardContent>
+                                <CardContent className={styles.cardContent}>
+                                    <Typography className={styles.productName}>
+                                        {item.product?.name}
+                                    </Typography>
 
-                            <Box className={styles.quantityWrapper}>
-                                <Button
-                                    size="small"
-                                    onClick={() =>
-                                        handleUpdateQuantity(item.product_uuid, item.quantity - 1)
-                                    }
-                                    disabled={item.quantity <= 1}
-                                >
-                                    -
-                                </Button>
+                                    <Typography className={styles.description}>
+                                        {item.product?.description}
+                                    </Typography>
 
-                                <Typography>{item.quantity}</Typography>
 
-                                <Button
-                                    size="small"
-                                    onClick={() =>
-                                        handleUpdateQuantity(item.product_uuid, item.quantity + 1)
-                                    }
-                                // disabled={Number(item.product?.stock) < item.quantity + 1}
-                                >
-                                    +
-                                </Button>
-                            </Box>
-                        </Card>
-                    ))}
+                                    <Box className={styles.placeWrapper}>
+                                        <Typography className={styles.quantity}>
+                                            Quantity: {item.quantity}
+                                        </Typography>
+
+                                        <Typography className={styles.price}>
+                                            Price: ₹ {Number(saleProduct?.price || 0) * item.quantity}
+                                        </Typography>
+                                    </Box>
+
+                                    <IconButton
+                                        className={styles.removeBtn}
+                                        onClick={() =>
+                                            handleRemoveItem(item.product_uuid)
+                                        }
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </CardContent>
+
+                                <Box className={styles.quantityWrapper}>
+                                    <Button
+                                        size="small"
+                                        onClick={() =>
+                                            handleUpdateQuantity(item.product_uuid, item.quantity - 1)
+                                        }
+                                        disabled={item.quantity <= 1}
+                                    >
+                                        -
+                                    </Button>
+
+                                    <Typography>{item.quantity}</Typography>
+
+                                    <Button
+                                        size="small"
+                                        onClick={() =>
+                                            handleUpdateQuantity(item.product_uuid, item.quantity + 1)
+                                        }
+                                    >
+                                        +
+                                    </Button>
+                                </Box>
+                            </Card>
+                        );
+                    })}
                 </Box>
             )}
 
@@ -157,7 +159,12 @@ export default function CartPage() {
                 </Typography>
 
                 <Typography className={styles.summaryPrice}>
-                    Total: ₹ {cart?.total_price || 0}
+                    Total: ₹ {
+                        cart?.items?.reduce((total, item) => {
+                            const saleProduct = saleProducts.find((product) => product.uuid === item.product_uuid);
+                            return total + (Number(saleProduct?.price || 0) * item.quantity);
+                        }, 0)
+                    }
                 </Typography>
             </Box>
 

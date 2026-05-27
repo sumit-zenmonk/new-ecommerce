@@ -21,13 +21,13 @@ import { UserModule } from './module/user-module/feature/user/user.module';
 
 // Catalog Module
 import { catalogDataSource } from './module/catalog-module/infrastructure/database/data-source';
-import { ProductModule } from './module/catalog-module/feature/product/product.module';
+import * as ProductProductModule from './module/catalog-module/feature/product/product.module';
 
 // Sale Module
 import * as SaleCronModule from './module/user-module/infrastructure/cron/cron.module';
 import { saleDataSource } from './module/sale-module/infrastructure/database/data-source';
 import { OrderModule } from './module/sale-module/feature/order/order.module';
-
+import * as SaleProductModule from './module/sale-module/feature/product/product.module';
 
 @Module({
   imports: [
@@ -62,7 +62,7 @@ import { OrderModule } from './module/sale-module/feature/order/order.module';
       retryAttempts: 10,
       retryDelay: 5000
     }),
-    ProductModule,
+    ProductProductModule.ProductModule,
 
     // Sale Modules
     TypeOrmModule.forRoot({
@@ -73,6 +73,7 @@ import { OrderModule } from './module/sale-module/feature/order/order.module';
     }),
     OrderModule,
     SaleCronModule.CronModule,
+    SaleProductModule.ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserRepository, JwtHelperService],
@@ -85,7 +86,7 @@ export class AppModule implements NestModule {
       .exclude(
         { path: '/user/login', method: RequestMethod.ALL },
         { path: '/user/register', method: RequestMethod.ALL },
-        { path: '/product', method: RequestMethod.ALL },
+        { path: '/*path/product', method: RequestMethod.GET },
       )
       .forRoutes('*');
   }

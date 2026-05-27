@@ -61,8 +61,7 @@ export class CreateOrderService {
         });
 
         return {
-            data: order,
-            message: "Order Created Successfully",
+            data: order
         };
     }
 }
