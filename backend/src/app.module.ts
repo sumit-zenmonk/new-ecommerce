@@ -12,6 +12,13 @@ import { SocketModule } from './module/common/infrastruture/socket/socket.module
 import { RabbitMQModule } from './module/common/infrastruture/rabbit-mq/rabbit-mq.module';
 import { AuthenticateMiddleware } from './module/common/infrastruture/middleware/authenticate.middleware';
 
+// User Module
+import { userDataSource } from './module/user-module/infrastructure/database/data-source';
+import { UserRepository } from './module/user-module/infrastructure/repository/user.repository';
+import { JwtHelperService } from './module/user-module/infrastructure/services/jwt.service';
+import * as UserCronModule from './module/user-module/infrastructure/cron/cron.module';
+import { UserModule } from './module/user-module/feature/user/user.module';
+
 @Module({
   imports: [
     // common
@@ -27,9 +34,19 @@ import { AuthenticateMiddleware } from './module/common/infrastruture/middleware
     RabbitMQModule,
     ScheduleModule.forRoot(),
     SocketModule,
+
+    //User Modules
+    TypeOrmModule.forRoot({
+      name: process.env.DB_POSTGRES_USER_SCHEMA || 'user_schema',
+      ...userDataSource.options,
+      retryAttempts: 10,
+      retryDelay: 5000
+    }),
+    UserModule,
+    UserCronModule.CronModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, UserRepository, JwtHelperService],
 })
 
 export class AppModule implements NestModule {
