@@ -139,9 +139,13 @@ export default function Home() {
                     <Button
                       className={styles.addtocart}
                       startIcon={<ShoppingCartIcon />}
+                      disabled={cart?.items?.some((item) => item.product_uuid === product.uuid)}
                       onClick={() => handleAddToCart(product)}
                     >
-                      Add to Cart
+                      {cart?.items?.some((item) => item.product_uuid === product.uuid)
+                        ? "Already in Cart"
+                        : "Add to Cart"
+                      }
                     </Button>
                   </CardContent>
                 </Card>

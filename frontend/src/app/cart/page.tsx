@@ -9,6 +9,7 @@ import { enqueueSnackbar } from "notistack";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks.ts";
 import { CartItem } from "@/redux/feature/cart/cart-type";
 import { clearCartState, removeCartItem, updateCartItemQuantity, } from "@/redux/feature/cart/cart-slice";
+import { createOrder } from "@/redux/feature/order/order-action";
 
 export default function CartPage() {
     const dispatch = useAppDispatch();
@@ -43,6 +44,29 @@ export default function CartPage() {
             enqueueSnackbar(err, { variant: "warning" });
         }
     };
+
+    const handlePlaceOrder = async () => {
+        try {
+            if (!cart?.items?.length) {
+                enqueueSnackbar("Cart is empty", { variant: "warning", });
+                return;
+            }
+
+            const payload = {
+                items: cart.items.map((item) => ({
+                    product_uuid: item.product_uuid,
+                    quantity: item.quantity,
+                })),
+            };
+
+            await dispatch(createOrder(payload)).unwrap();
+            dispatch(clearCartState());
+            enqueueSnackbar("Order placed successfully", { variant: "success", });
+        } catch (error: any) {
+            enqueueSnackbar(error.message, { variant: "error", });
+        }
+    };
+
 
     return (
         <Container maxWidth="xl" className={styles.container}>
@@ -170,13 +194,23 @@ export default function CartPage() {
 
             <Box className={styles.paybox}>
                 {cart && cart?.items?.length > 0 && (
-                    <Button
-                        color="primary"
-                        onClick={handleClearCart}
-                        variant="contained"
-                    >
-                        Clear Cart
-                    </Button>
+                    <>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handlePlaceOrder}
+                        >
+                            Place Order
+                        </Button>
+
+                        <Button
+                            className={styles.clearcart}
+                            onClick={handleClearCart}
+                            variant="contained"
+                        >
+                            Clear Cart
+                        </Button>
+                    </>
                 )}
             </Box>
         </Container>

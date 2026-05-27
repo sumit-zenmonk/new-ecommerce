@@ -3,7 +3,7 @@ import { DataSource, Not, Repository } from "typeorm";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { OrderEntity } from "../../domain/order/order.entity";
 import { UserEntity } from "../../domain/user/user.entity";
-import { OrderPaymentStatusEnum, OrderStatusEnum } from "../../domain/order/order.enum";
+import { OrderStatusEnum } from "../../domain/order/order.enum";
 
 @Injectable()
 export class OrderRepository extends Repository<OrderEntity> {

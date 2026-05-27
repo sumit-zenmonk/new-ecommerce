@@ -75,6 +75,14 @@ export default function HeaderComp() {
                 {user ? (
                     <>
                         <Button
+                            onClick={() => {
+                                router.push("/order")
+                            }}
+                        >
+                            Order
+                        </Button>
+
+                        <Button
                             className={styles.logoutbtn}
                             onClick={async () => { await handleLogOut() }}
                         >

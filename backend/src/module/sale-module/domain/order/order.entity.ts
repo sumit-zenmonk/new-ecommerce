@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, Generated, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { UserEntity } from "../user/user.entity";
-import { OrderPaymentStatusEnum, OrderStatusEnum } from "./order.enum";
+import { OrderStatusEnum } from "./order.enum";
 import { OrderItemEntity } from "../order-item/order-item.entity";
 
 @Entity('order')
