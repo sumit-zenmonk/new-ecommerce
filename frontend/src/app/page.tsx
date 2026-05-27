@@ -10,10 +10,12 @@ import { enqueueSnackbar } from "notistack";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks.ts";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Product } from "@/redux/feature/product/product-type";
+import { addToCart } from "@/redux/feature/cart/cart-slice";
 
 export default function Home() {
   const dispatch = useAppDispatch();
   const { products, totalDocuments, loading, } = useAppSelector((state: RootState) => state.productReducer);
+  const { cart } = useAppSelector((state: RootState) => state.cartReducer);
   const { user } = useAppSelector((state: RootState) => state.authReducer);
   const [offset, setOffset] = useState(Number(process.env.NEXT_PUBLIC_PAGE_OFFSET) || 0);
   const limit = Number(process.env.NEXT_PUBLIC_PAGE_LIMIT) || 10;
@@ -60,17 +62,31 @@ export default function Home() {
     }
   };
 
-  const handleAddToCart = async (product_uuid: string) => {
+  const handleAddToCart = async (product: Product) => {
     try {
       if (!user) {
         enqueueSnackbar("Login Needed", { variant: "error" });
         return;
       }
 
-      enqueueSnackbar("Item added to cart", { variant: "success", });
+      const alreadyInCart = cart?.items?.some((item) => item.product_uuid === product.uuid);
+      if (alreadyInCart) {
+        enqueueSnackbar("Already in cart", { variant: "warning" });
+        return;
+      }
+
+      dispatch(
+        addToCart({
+          product_uuid: product.uuid,
+          quantity: 1,
+          product,
+        })
+      );
+
+      enqueueSnackbar("Item added to cart", { variant: "success" });
     } catch (err: any) {
       console.log(err);
-      enqueueSnackbar(err, { variant: "warning", });
+      enqueueSnackbar(err, { variant: "warning" });
     }
   };
 
@@ -121,8 +137,9 @@ export default function Home() {
                   <Button
                     className={styles.addtocart}
                     startIcon={<ShoppingCartIcon />}
-                    onClick={() => handleAddToCart(product.uuid)}
-                  >Add to Cart
+                    onClick={() => handleAddToCart(product)}
+                  >
+                    Add to Cart
                   </Button>
                 </CardContent>
               </Card>
