@@ -23,7 +23,6 @@ export class OrderRepository extends Repository<OrderEntity> {
         const [data, total] = await this.findAndCount({
             where: { user_uuid: user.uuid },
             relations: {
-                items: true,
             },
             order: {
                 created_at: 'DESC'
@@ -57,17 +56,6 @@ export class OrderRepository extends Repository<OrderEntity> {
         )
     }
 
-    async updateReturnedFromStatus(uuid: string, status: OrderStatusEnum) {
-        return await this.update(
-            {
-                uuid: uuid
-            },
-            {
-                returned_from_status: status
-            }
-        )
-    }
-
     async updateOrderStatusIfNotReturned(uuid: string, status: OrderStatusEnum) {
         return await this.update(
             {
@@ -87,7 +75,6 @@ export class OrderRepository extends Repository<OrderEntity> {
                 user_uuid: user_uuid
             },
             relations: {
-                items: true,
                 user: true,
             }
         });

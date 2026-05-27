@@ -86,6 +86,15 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
         );
         await this.setupRetryQueue(QueueEnum.BILLING_USER_REGISTERED_QUEUE);
 
+        // shipment user registered queue
+        await this.setupExchangeQueueAndBind(
+            QueueEnum.SHIPMENT_USER_REGISTERED_QUEUE,
+            ExchangeNameEnum.USER_EXCHANGE,
+            RoutingKeyEnum.USER_REGISTERED,
+            ExchangeTypeEnum.DIRECT,
+        );
+        await this.setupRetryQueue(QueueEnum.SHIPMENT_USER_REGISTERED_QUEUE);
+
         // billing order created queue
         await this.setupExchangeQueueAndBind(
             QueueEnum.BILLING_ORDER_CREATED_QUEUE,

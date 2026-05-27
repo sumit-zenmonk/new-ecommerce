@@ -18,14 +18,20 @@ import * as SaleUserRegisteredConsumer from 'src/module/sale-module/infrastructu
 import * as SaleUserRegisterHandler from 'src/module/sale-module/feature/user/user-register/user-register.handler';
 
 // Billing Module
-import * as BillingmoduleUserRepo from 'src/module/billing-module/infrastructure/repository/user.repository';
-import * as BillingmoduleInboxRepo from 'src/module/billing-module/infrastructure/repository/inbox.repository';
-import * as BillingmoduleOrderRepo from 'src/module/billing-module/infrastructure/repository/order.repository';
-import * as BillingmoduleOrderItemRepo from 'src/module/billing-module/infrastructure/repository/order.item.repository';
+import * as BillingUserRepo from 'src/module/billing-module/infrastructure/repository/user.repository';
+import * as BillingInboxRepo from 'src/module/billing-module/infrastructure/repository/inbox.repository';
+import * as BillingOrderRepo from 'src/module/billing-module/infrastructure/repository/order.repository';
+import * as BillingOrderItemRepo from 'src/module/billing-module/infrastructure/repository/order.item.repository';
 import * as BillingUserRegisterService from 'src/module/billing-module/feature/user/user-register/user-register.service';
 import * as BillingOrderCreatedService from 'src/module/billing-module/feature/order/order-created/order-created.handler';
 import * as BillingUserConsumer from 'src/module/billing-module/infrastructure/rabbit-mq-consumer/user/user-registered/user-registered.consumer';
 import * as BillingOrderCreatedConsumer from 'src/module/billing-module/infrastructure/rabbit-mq-consumer/order/order-created/order-created.consumer';
+
+// Shipment Module
+import * as ShipmentInboxRepo from 'src/module/shipment-module/infrastructure/repository/inbox.repository';
+import * as ShipmentUserRepo from 'src/module/shipment-module/infrastructure/repository/user.repository';
+import * as ShipmentUserRegisterService from 'src/module/shipment-module/feature/user/user-register/user-register.handler';
+import * as ShipmentUserConsumer from 'src/module/shipment-module/infrastructure/rabbit-mq-consumer/user/user-registered/user-registered.consumer';
 
 @Global()
 @Module({
@@ -50,14 +56,20 @@ import * as BillingOrderCreatedConsumer from 'src/module/billing-module/infrastr
         SaleUserRegisterHandler.UserRegisterService,
 
         // Billing Module
-        BillingmoduleUserRepo.UserRepository,
-        BillingmoduleInboxRepo.InboxRepository,
-        BillingmoduleOrderRepo.OrderRepository,
-        BillingmoduleOrderItemRepo.OrderItemRepository,
-        BillingUserRegisterService.UserRegisterService, 
+        BillingUserRepo.UserRepository,
+        BillingInboxRepo.InboxRepository,
+        BillingOrderRepo.OrderRepository,
+        BillingOrderItemRepo.OrderItemRepository,
+        BillingUserRegisterService.UserRegisterService,
         BillingOrderCreatedService.OrderCreatedService,
         BillingUserConsumer.UserRegisteredConsumer,
         BillingOrderCreatedConsumer.OrderCreatedConsumer,
+
+        // Shipment Module
+        ShipmentUserRepo.UserRepository,
+        ShipmentInboxRepo.InboxRepository,
+        ShipmentUserRegisterService.UserRegisterService,
+        ShipmentUserConsumer.UserRegisteredConsumer,
     ],
     exports: [RabbitMQService],
 })
