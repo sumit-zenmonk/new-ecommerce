@@ -8,6 +8,11 @@ export class GetWalletController {
 
     @Get()
     async getWallet(@Req() req: Request) {
-        return this.getWalletService.getWallet(req.user);
+        const { data } = await this.getWalletService.getWallet(req.user);
+
+        return {
+            data: data,
+            message: "Wallet fetched successfully"
+        };
     }
 }

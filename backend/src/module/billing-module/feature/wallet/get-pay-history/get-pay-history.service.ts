@@ -13,7 +13,6 @@ export class GetPayHistoryService {
 
         return {
             data: history,
-            message: "Wallet history fetched successfully"
         };
     }
 }

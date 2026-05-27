@@ -8,6 +8,11 @@ export class GetPayHistoryController {
 
     @Get("/histories")
     async getPayHistories(@Req() req: Request) {
-        return this.getPayHistoryService.getPayHistories(req.user);
+        const { data } = await this.getPayHistoryService.getPayHistories(req.user);
+
+        return {
+            data: data,
+            message: "Wallet history fetched successfully"
+        };
     }
 }

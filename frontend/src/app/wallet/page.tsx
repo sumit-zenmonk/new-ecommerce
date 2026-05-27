@@ -7,6 +7,7 @@ import { RootState, AppDispatch } from "@/redux/store";
 import styles from "./wallet.module.css"
 import { getWallet, getwalletHistories } from "@/redux/feature/wallet/wallet.action";
 import { WalletHistoryTypeEnum } from "@/enum/wallet.enum";
+import AddAmountModal from "@/component/add-amount-modal/AddAmountModal";
 
 export default function PaymentHistoryPage() {
     const dispatch = useDispatch<AppDispatch>();
@@ -52,10 +53,6 @@ export default function PaymentHistoryPage() {
                     </CardContent>
 
                     <Box className={styles.buttonsContainer}>
-                        <Button onClick={() => setOpenCardModal(true)}>
-                            Add Card
-                        </Button>
-
                         <Button onClick={() => setOpenAmountModal(true)}>
                             Add Amount
                         </Button>
@@ -106,6 +103,8 @@ export default function PaymentHistoryPage() {
                     );
                 })}
             </Box>
+
+            <AddAmountModal open={openAmountModal} onClose={() => setOpenAmountModal(false)} />
         </Container>
     );
 }

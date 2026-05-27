@@ -47,7 +47,7 @@ export const addAmount = createAsyncThunk<
         try {
             const token = getState().authReducer.token || "";
 
-            const res = await fetch(`${API_URL}/wallet/add-amount`, {
+            const res = await fetch(`${API_URL}/wallet/amount`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
