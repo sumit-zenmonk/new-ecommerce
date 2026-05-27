@@ -2,20 +2,14 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { ProductState } from "./product-type";
-
-import {
-    getCatalogProducts,
-    getSaleProducts,
-} from "./product-action";
+import { getCatalogProducts, getSaleProducts, } from "./product-action";
 
 const initialState: ProductState = {
     catalogProducts: [],
     saleProducts: [],
-
     loading: false,
     error: null,
     status: "pending",
-
     limit: 10,
     offset: 0,
     totalDocuments: 0,
@@ -23,16 +17,13 @@ const initialState: ProductState = {
 
 const productSlice = createSlice({
     name: "product",
-
     initialState,
-
     reducers: {
         resetProductError: (state) => {
             state.error = null;
             state.status = "pending";
         },
     },
-
     extraReducers: (builder) => {
         builder
             .addCase(getCatalogProducts.pending, (state) => {

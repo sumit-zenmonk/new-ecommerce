@@ -1,7 +1,7 @@
 "use client";
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CartState, CartItem } from "./cart-type";
+import { CartState, CartItem, AddToCartPayload } from "./cart-type";
 
 const getCartFromStorage = () => {
     if (typeof window === "undefined") return null;
@@ -25,14 +25,12 @@ const cartSlice = createSlice({
             state.error = null;
             state.status = "pending";
         },
-
         clearCartState: (state) => {
             state.cart = null;
             state.error = null;
             state.status = "pending";
             localStorage.removeItem("cart");
         },
-
         addToCart: (state, action: PayloadAction<CartItem>) => {
             if (!state.cart) {
                 state.cart = {
@@ -47,21 +45,13 @@ const cartSlice = createSlice({
             }
             localStorage.setItem("cart", JSON.stringify(state.cart));
         },
-
         removeCartItem: (state, action: PayloadAction<string>) => {
             if (!state.cart) return;
 
             state.cart.items = state.cart.items.filter((item) => item.product_uuid !== action.payload);
             localStorage.setItem("cart", JSON.stringify(state.cart));
         },
-
-        updateCartItemQuantity: (
-            state,
-            action: PayloadAction<{
-                product_uuid: string;
-                quantity: number;
-            }>
-        ) => {
+        updateCartItemQuantity: (state, action: PayloadAction<AddToCartPayload>) => {
             if (!state.cart) return;
 
             const item = state.cart.items.find((item) => item.product_uuid === action.payload.product_uuid);

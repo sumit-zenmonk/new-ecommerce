@@ -1,7 +1,6 @@
 "use client";
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
-
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const getCatalogProducts = createAsyncThunk(
@@ -25,7 +24,6 @@ export const getCatalogProducts = createAsyncThunk(
             );
 
             const result = await res.json();
-
             if (!res.ok) {
                 throw new Error(result.message);
             }
@@ -58,7 +56,6 @@ export const getSaleProducts = createAsyncThunk(
             );
 
             const result = await res.json();
-
             if (!res.ok) {
                 throw new Error(result.message);
             }
