@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Box, Button, Card, CardContent, CardMedia, CircularProgress, Container, Typography, } from "@mui/material";
+import { Box, Button, Card, CardContent, CardMedia, CircularProgress, Container, Typography } from "@mui/material";
 import styles from "./home.module.css";
 import { RootState } from "@/redux/store";
 import { getProducts } from "@/redux/feature/product/product-action";

@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Box, Card, CardContent, CardMedia, Container, IconButton, Typography, CircularProgress, Button, Dialog, DialogTitle, DialogContent, DialogActions, RadioGroup, FormControlLabel, Radio, Divider } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Container, IconButton, Typography, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styles from "./cart.module.css";
 import { RootState } from "@/redux/store";
 import { enqueueSnackbar } from "notistack";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks.ts";
 import { CartItem } from "@/redux/feature/cart/cart-type";
-import { clearCartState } from "@/redux/feature/cart/cart-slice";
+import { clearCartState, removeCartItem, updateCartItemQuantity, } from "@/redux/feature/cart/cart-slice";
 
 export default function CartPage() {
     const dispatch = useAppDispatch();
@@ -16,6 +16,7 @@ export default function CartPage() {
 
     const handleRemoveItem = async (product_uuid: string) => {
         try {
+            dispatch(removeCartItem(product_uuid));
             enqueueSnackbar("Item removed from cart", { variant: "success" });
         } catch (err: any) {
             enqueueSnackbar(err, { variant: "warning" });
@@ -35,12 +36,12 @@ export default function CartPage() {
         if (quantity < 1) return;
 
         try {
+            dispatch(updateCartItemQuantity({ product_uuid, quantity }));
             enqueueSnackbar("Cart updated", { variant: "success" });
         } catch (err: any) {
             enqueueSnackbar(err, { variant: "warning" });
         }
     };
-
 
     return (
         <Container maxWidth="xl" className={styles.container}>
