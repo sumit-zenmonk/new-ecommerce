@@ -10,9 +10,7 @@ export class productMigration1778505600001 implements MigrationInterface {
                 columns: [
                     { name: "uuid", type: "uuid", isPrimary: true, generationStrategy: "uuid", default: "uuid_generate_v4()", },
                     { name: "id", type: "bigint", isGenerated: true, generationStrategy: "increment", isUnique: true, isNullable: false, },
-                    { name: "name", type: "varchar", isNullable: false, },
-                    { name: "description", type: "text", isNullable: true, },
-                    { name: "image_url", type: "varchar", isNullable: true, },
+                    { name: "price", type: "decimal", precision: 10, scale: 2, default: 0, isNullable: false, },
                     { name: "created_at", type: "timestamp", default: "now()", },
                     { name: "updated_at", type: "timestamp", default: "now()", },
                     { name: "deleted_at", type: "timestamp", isNullable: true, },

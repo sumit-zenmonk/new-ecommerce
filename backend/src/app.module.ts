@@ -23,6 +23,12 @@ import { UserModule } from './module/user-module/feature/user/user.module';
 import { catalogDataSource } from './module/catalog-module/infrastructure/database/data-source';
 import { ProductModule } from './module/catalog-module/feature/product/product.module';
 
+// Sale Module
+import * as SaleCronModule from './module/user-module/infrastructure/cron/cron.module';
+import { saleDataSource } from './module/sale-module/infrastructure/database/data-source';
+import { OrderModule } from './module/sale-module/feature/order/order.module';
+
+
 @Module({
   imports: [
     // common
@@ -57,6 +63,16 @@ import { ProductModule } from './module/catalog-module/feature/product/product.m
       retryDelay: 5000
     }),
     ProductModule,
+
+    // Sale Modules
+    TypeOrmModule.forRoot({
+      name: process.env.DB_POSTGRES_SALE_SCHEMA || 'sale_schema',
+      ...saleDataSource.options,
+      retryAttempts: 10,
+      retryDelay: 5000
+    }),
+    OrderModule,
+    SaleCronModule.CronModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserRepository, JwtHelperService],

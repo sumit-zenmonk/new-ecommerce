@@ -64,11 +64,6 @@ export default function Home() {
 
   const handleAddToCart = async (product: Product) => {
     try {
-      if (!user) {
-        enqueueSnackbar("Login Needed", { variant: "error" });
-        return;
-      }
-
       const alreadyInCart = cart?.items?.some((item) => item.product_uuid === product.uuid);
       if (alreadyInCart) {
         enqueueSnackbar("Already in cart", { variant: "warning" });

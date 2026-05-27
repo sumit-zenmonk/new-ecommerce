@@ -23,9 +23,11 @@ export enum ExchangeNameEnum {
 // exchange name + routing key
 export enum RoutingKeyEnum {
     USER_REGISTERED = 'user.registered',
+    ORDER_CREATED = 'order.created'
 }
 
 // queue name (module name) + routing key + endfix(queue)
 export enum QueueEnum {
     CATALOG_USER_REGISTERED_QUEUE = 'catalog.user.registered.queue',
+    SALE_USER_REGISTERED_QUEUE = 'sale.user.registered.queue',
 }
