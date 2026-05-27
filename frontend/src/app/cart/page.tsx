@@ -10,11 +10,14 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks.ts";
 import { CartItem } from "@/redux/feature/cart/cart-type";
 import { clearCartState, removeCartItem, updateCartItemQuantity, } from "@/redux/feature/cart/cart-slice";
 import { createOrder } from "@/redux/feature/order/order-action";
+import { getAddresses } from "@/redux/feature/address/address.action";
+import UserAddressModal from "@/component/user-address-modal/user-address-modal";
 
 export default function CartPage() {
     const dispatch = useAppDispatch();
     const { cart, loading } = useAppSelector((state: RootState) => state.cartReducer);
     const { saleProducts } = useAppSelector((state: RootState) => state.productReducer);
+    const [openUserAddressModal, setOpenUserAddressModal] = useState(false);
 
     const handleRemoveItem = async (product_uuid: string) => {
         try {
@@ -67,6 +70,20 @@ export default function CartPage() {
         }
     };
 
+    const fetchAddresses = async () => {
+        try {
+            await dispatch(getAddresses()).unwrap();
+        } catch (err: any) {
+            console.error("Error fetching addresses:", err);
+        }
+    };
+
+    const handleAddAddressClose = () => {
+        setOpenUserAddressModal(false);
+        setTimeout(() => {
+            fetchAddresses();
+        }, 500);
+    };
 
     return (
         <Container maxWidth="xl" className={styles.container}>
@@ -203,6 +220,10 @@ export default function CartPage() {
                             Place Order
                         </Button>
 
+                        <Button onClick={() => setOpenUserAddressModal(true)}>
+                            Add address
+                        </Button>
+
                         <Button
                             className={styles.clearcart}
                             onClick={handleClearCart}
@@ -213,6 +234,8 @@ export default function CartPage() {
                     </>
                 )}
             </Box>
+
+            <UserAddressModal isOpen={openUserAddressModal} onClose={handleAddAddressClose} />
         </Container>
     );
 }

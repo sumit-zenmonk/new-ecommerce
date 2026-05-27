@@ -34,6 +34,9 @@ import { billingDataSource } from './module/billing-module/infrastructure/databa
 import { WalletModule } from './module/billing-module/feature/wallet/wallet.module';
 import * as billingCronModule from './module/billing-module/infrastructure/cron/cron.module';
 
+// Shipment Module
+import { shipmentDataSource } from './module/shipment-module/infrastructure/database/data-source';
+import { UserAddressModule } from './module/shipment-module/feature/user/user-address.module';
 
 @Module({
   imports: [
@@ -91,6 +94,15 @@ import * as billingCronModule from './module/billing-module/infrastructure/cron/
     }),
     WalletModule,
     billingCronModule.CronModule,
+
+    // shipment Modules
+    TypeOrmModule.forRoot({
+      name: process.env.DB_POSTGRES_SHIPMENT_SCHEMA || 'shipment_schema',
+      ...shipmentDataSource.options,
+      retryAttempts: 10,
+      retryDelay: 5000
+    }),
+    UserAddressModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserRepository, JwtHelperService],

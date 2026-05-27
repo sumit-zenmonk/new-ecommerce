@@ -33,6 +33,7 @@ export enum QueueEnum {
     CATALOG_USER_REGISTERED_QUEUE = 'catalog.user.registered.queue',
     SALE_USER_REGISTERED_QUEUE = 'sale.user.registered.queue',
     BILLING_USER_REGISTERED_QUEUE = 'billing.user.registered.queue',
+    SHIPMENT_USER_REGISTERED_QUEUE='shipment.user.registered.queue',
 
     BILLING_ORDER_CREATED_QUEUE = 'billing.order.created.queue',
 }

@@ -8,6 +8,7 @@ For Creation
 4. Catalog Module -> npm run build && npm run migration:catalog:run && npm run seed:catalog:user && npm run seed:catalog:product
 6. Sale Module -> npm run build && npm run migration:sale:run && npm run seed:sale:user && npm run seed:sale:product
 7. Biiling Module-> npm run build && npm run migration:billing:run && npm run seed:billing:user
+8. Shipment Module-> npm run build && npm run migration:shipment:run && npm run seed:shipment:user
 
 One Click Copy Paste above commands
-npm run build && npm run migration:user:run && npm run seed:user:user && npm run migration:catalog:run && npm run seed:catalog:user && npm run seed:catalog:product && npm run migration:sale:run && npm run seed:sale:user && npm run seed:sale:product && npm run migration:billing:run && npm run seed:billing:user
+npm run build && npm run migration:user:run && npm run seed:user:user && npm run migration:catalog:run && npm run seed:catalog:user && npm run seed:catalog:product && npm run migration:sale:run && npm run seed:sale:user && npm run seed:sale:product && npm run migration:billing:run && npm run seed:billing:user && npm run migration:shipment:run && npm run seed:shipment:user
