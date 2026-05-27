@@ -8,7 +8,7 @@ export class UserRegisterService {
         private readonly repository: UserRepository,
     ) { }
 
-    async userRegister(payload: UserRegisteredEventPayload) {
+    async handle(payload: UserRegisteredEventPayload) {
         const isUserExists = await this.repository.findByEmail(payload.email);
         if (isUserExists.length) {
             console.warn(`Duplicate skipped: ${isUserExists[0].email}`);

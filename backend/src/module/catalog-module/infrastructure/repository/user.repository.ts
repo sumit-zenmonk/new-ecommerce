@@ -40,7 +40,6 @@ export class UserRepository extends Repository<UserEntity> {
                 email: true,
                 name: true,
                 uuid: true,
-                password: true,
             }
         });
         return user;

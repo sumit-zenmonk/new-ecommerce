@@ -59,148 +59,15 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
         const channel = this.channel;
         if (!channel) return;
 
-        // product user registered queue
+        // catalog user registered queue
         await this.setupExchangeQueueAndBind(
-            QueueEnum.PRODUCT_USER_REGISTERED_QUEUE,
+            QueueEnum.CATALOG_USER_REGISTERED_QUEUE,
             ExchangeNameEnum.USER_EXCHANGE,
             RoutingKeyEnum.USER_REGISTERED,
             ExchangeTypeEnum.DIRECT,
         );
 
-        // cart user registered queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.CART_USER_REGISTERED_QUEUE,
-            ExchangeNameEnum.USER_EXCHANGE,
-            RoutingKeyEnum.USER_REGISTERED,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // order user registered queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.ORDER_USER_REGISTERED_QUEUE,
-            ExchangeNameEnum.USER_EXCHANGE,
-            RoutingKeyEnum.USER_REGISTERED,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // finance user registered queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.FINANCE_USER_REGISTERED_QUEUE,
-            ExchangeNameEnum.USER_EXCHANGE,
-            RoutingKeyEnum.USER_REGISTERED,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // shipment user registered queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.SHIPMENT_USER_REGISTERED_QUEUE,
-            ExchangeNameEnum.USER_EXCHANGE,
-            RoutingKeyEnum.USER_REGISTERED,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // cart order created queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.CART_ORDER_CREATED_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
-            RoutingKeyEnum.ORDER_CREATED,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // shipment order created queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.SHIPMENT_ORDER_CREATED_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
-            RoutingKeyEnum.ORDER_CREATED,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // order paid queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.ORDER_PAID_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
-            RoutingKeyEnum.ORDER_PAID,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // shipment order paid queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.SHIPMENT_ORDER_PAID_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
-            RoutingKeyEnum.ORDER_PAID,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // order status changed queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.ORDER_STATUS_CHANGED_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
-            RoutingKeyEnum.ORDER_STATUS_CHANGED,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // order returned so change status in order module queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.ORDER_RETURNED_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
-            RoutingKeyEnum.ORDER_RETURNED,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // order paid so deduct stock in product module queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.PRODUCT_ORDER_PAID_DEDUCT_STOCK_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
-            RoutingKeyEnum.ORDER_PAID_DEDUCT_STOCK,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // order paid so deduct stock in cart module queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.CART_ORDER_PAID_DEDUCT_STOCK_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
-            RoutingKeyEnum.ORDER_PAID_DEDUCT_STOCK,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // order returned so increase stock in product module queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.PRODUCT_ORDER_RETURNED_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
-            RoutingKeyEnum.ORDER_RETURNED,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // order returned so increase stock in cart module queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.CART_ORDER_RETURNED_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
-            RoutingKeyEnum.ORDER_RETURNED,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        // order returned so refund money in finance module queue
-        await this.setupExchangeQueueAndBind(
-            QueueEnum.FINANCE_ORDER_RETURNED_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
-            RoutingKeyEnum.ORDER_RETURNED,
-            ExchangeTypeEnum.DIRECT,
-        );
-
-        await this.setupRetryQueue(QueueEnum.PRODUCT_USER_REGISTERED_QUEUE);
-        await this.setupRetryQueue(QueueEnum.CART_USER_REGISTERED_QUEUE);
-        await this.setupRetryQueue(QueueEnum.ORDER_USER_REGISTERED_QUEUE);
-        await this.setupRetryQueue(QueueEnum.FINANCE_USER_REGISTERED_QUEUE);
-        await this.setupRetryQueue(QueueEnum.CART_ORDER_CREATED_QUEUE);
-        await this.setupRetryQueue(QueueEnum.ORDER_PAID_QUEUE);
-        await this.setupRetryQueue(QueueEnum.SHIPMENT_ORDER_PAID_QUEUE);
-        await this.setupRetryQueue(QueueEnum.ORDER_STATUS_CHANGED_QUEUE);
-        await this.setupRetryQueue(QueueEnum.ORDER_RETURNED_QUEUE);
-        await this.setupRetryQueue(QueueEnum.PRODUCT_ORDER_PAID_DEDUCT_STOCK_QUEUE);
-        await this.setupRetryQueue(QueueEnum.CART_ORDER_PAID_DEDUCT_STOCK_QUEUE);
-        await this.setupRetryQueue(QueueEnum.PRODUCT_ORDER_RETURNED_QUEUE);
-        await this.setupRetryQueue(QueueEnum.CART_ORDER_RETURNED_QUEUE);
-        await this.setupRetryQueue(QueueEnum.FINANCE_ORDER_RETURNED_QUEUE);
+        await this.setupRetryQueue(QueueEnum.CATALOG_USER_REGISTERED_QUEUE);
     }
 
     private async setupRetryQueue(originalQueue: string, retryDelay = Number(process.env.RETRYDELAY) || 15000) {
