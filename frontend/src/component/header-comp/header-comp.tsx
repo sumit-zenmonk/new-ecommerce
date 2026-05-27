@@ -51,7 +51,7 @@ export default function HeaderComp() {
                         </svg>
                     </Box>
 
-                    <span className={styles.logoText}>Ecommerce</span>
+                    <span className={styles.logoText}>Hardin Mart</span>
                 </Box>
             </Box>
 

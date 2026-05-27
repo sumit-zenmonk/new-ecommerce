@@ -1,7 +1,7 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { RabbitMQService } from 'src/module/common/infrastruture/rabbit-mq/rabbit-mq.service';
 import { ExchangeNameEnum, ExchangeTypeEnum, QueueEnum, RoutingKeyEnum } from 'src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.enum';
-import { RabbitMQConsumerMessage, UserRegisteredEventPayload } from 'src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.type';
+import { RabbitMQConsumerMessage, UserRegisteredMQEventPayload } from 'src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.type';
 import { InboxRepository } from '../../../repository/inbox.repository';
 import { UserRegisterService } from 'src/module/billing-module/feature/user/user-register/user-register.service';
 
@@ -16,7 +16,7 @@ export class UserRegisteredConsumer implements OnModuleInit {
     ) { }
 
     async onModuleInit() {
-        await this.rabbitMQService.consumeMessages<RabbitMQConsumerMessage<UserRegisteredEventPayload>>(
+        await this.rabbitMQService.consumeMessages<RabbitMQConsumerMessage<UserRegisteredMQEventPayload>>(
             QueueEnum.BILLING_USER_REGISTERED_QUEUE,
             async (data) => {
                 const { outbox_uuid, payload } = data;

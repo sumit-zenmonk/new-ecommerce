@@ -17,10 +17,7 @@ export class CreateOrderService {
     async createOrder(user: UserEntity, body: CreateOrderDto) {
         const { items } = body;
 
-        const order = await this.orderRepository.createOrder({
-            user_uuid: user.uuid,
-        });
-
+        const order = await this.orderRepository.createOrder({ user_uuid: user.uuid, });
         const orderItems = await Promise.all(
             items.map(item =>
                 this.orderItemRepository.createOrderItem({
@@ -52,9 +49,10 @@ export class CreateOrderService {
             message_payload: {
                 order_uuid: order.uuid,
                 user_uuid: user.uuid,
-                items: orderItems.map(item => ({
-                    uuid: item.uuid,
+                items: items.map((item, index) => ({
+                    uuid: orderItems[index].uuid,
                     product_uuid: item.product_uuid,
+                    quantity: item.quantity,
                 })),
                 created_at: new Date(),
             },
