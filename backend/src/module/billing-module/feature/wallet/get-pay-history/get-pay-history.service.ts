@@ -1,0 +1,19 @@
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { BillingRepository } from "src/module/billing-module/infrastructure/repository/billing.repository";
+import { UserEntity } from "src/module/user-module/domain/user/user.entity";
+
+@Injectable()
+export class GetPayHistoryService {
+    constructor(
+        private readonly repository: BillingRepository,
+    ) { }
+
+    async getPayHistories(user: UserEntity) {
+        const history = await this.repository.findHistories(user.uuid);
+
+        return {
+            data: history,
+            message: "Wallet history fetched successfully"
+        };
+    }
+}

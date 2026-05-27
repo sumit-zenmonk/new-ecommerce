@@ -29,6 +29,12 @@ import { saleDataSource } from './module/sale-module/infrastructure/database/dat
 import { OrderModule } from './module/sale-module/feature/order/order.module';
 import * as SaleProductModule from './module/sale-module/feature/product/product.module';
 
+// Billing Module
+import { billingDataSource } from './module/billing-module/infrastructure/database/data-source';
+import { WalletModule } from './module/billing-module/feature/wallet/wallet.module';
+import * as billingCronModule from './module/billing-module/infrastructure/cron/cron.module';
+
+
 @Module({
   imports: [
     // common
@@ -74,6 +80,17 @@ import * as SaleProductModule from './module/sale-module/feature/product/product
     OrderModule,
     SaleCronModule.CronModule,
     SaleProductModule.ProductModule,
+
+
+    // billing Modules
+    TypeOrmModule.forRoot({
+      name: process.env.DB_POSTGRES_billing_SCHEMA || 'billing_schema',
+      ...billingDataSource.options,
+      retryAttempts: 10,
+      retryDelay: 5000
+    }),
+    WalletModule,
+    billingCronModule.CronModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserRepository, JwtHelperService],

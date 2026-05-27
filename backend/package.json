@@ -36,7 +36,12 @@
     "seed:sale:product": "ts-node -r tsconfig-paths/register src/module/sale-module/infrastructure/database/seed/product.seed.ts",
     "migration:sale:generate": "npm run typeorm -- -d dist/module/sale-module/infrastructure/database/data-source.js migration:generate src/module/sale-module/infrastructure/database/migrations/InitMigration",
     "migration:sale:run": "npm run typeorm -- -d dist/module/sale-module/infrastructure/database/data-source.js migration:run",
-    "migration:sale:revert": "npm run typeorm -- -d dist/module/sale-module/infrastructure/database/data-source.js migration:revert"
+    "migration:sale:revert": "npm run typeorm -- -d dist/module/sale-module/infrastructure/database/data-source.js migration:revert",
+
+    "seed:billing:user": "ts-node -r tsconfig-paths/register src/module/billing-module/infrastructure/database/seed/user.seed.ts",
+    "migration:billing:generate": "npm run typeorm -- -d dist/module/billing-module/infrastructure/database/data-source.js migration:generate src/module/billing-module/infrastructure/database/migrations/InitMigration",
+    "migration:billing:run": "npm run typeorm -- -d dist/module/billing-module/infrastructure/database/data-source.js migration:run",
+    "migration:billing:revert": "npm run typeorm -- -d dist/module/billing-module/infrastructure/database/data-source.js migration:revert"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^2.3.6",

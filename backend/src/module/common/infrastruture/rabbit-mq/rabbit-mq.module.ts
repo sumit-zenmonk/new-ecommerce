@@ -17,6 +17,12 @@ import * as SaleInboxRepository from 'src/module/sale-module/infrastructure/repo
 import * as SaleUserRegisteredConsumer from 'src/module/sale-module/infrastructure/rabbit-mq-consumer/user/user-registered/user-registered.consumer';
 import * as SaleUserRegisterHandler from 'src/module/sale-module/feature/user/user-register/user-register.handler';
 
+// Billing Module
+import * as BillingmoduleUserRepo from 'src/module/billing-module/infrastructure/repository/user.repository';
+import * as BillingmoduleInboxRepo from 'src/module/billing-module/infrastructure/repository/inbox.repository';
+import * as BillingUserRegisterService from 'src/module/billing-module/feature/user/user-register/user-register.service';
+import * as BillingUserConsumer from 'src/module/billing-module/infrastructure/rabbit-mq-consumer/user/user-registered/user-registered.consumer';
+
 @Global()
 @Module({
     imports: [],
@@ -38,6 +44,12 @@ import * as SaleUserRegisterHandler from 'src/module/sale-module/feature/user/us
         SaleInboxRepository.InboxRepository,
         SaleUserRegisteredConsumer.UserRegisteredConsumer,
         SaleUserRegisterHandler.UserRegisterService,
+
+        // Billing Module
+        BillingmoduleUserRepo.UserRepository,
+        BillingmoduleInboxRepo.InboxRepository,
+        BillingUserRegisterService.UserRegisterService,
+        BillingUserConsumer.UserRegisteredConsumer,
     ],
     exports: [RabbitMQService],
 })
