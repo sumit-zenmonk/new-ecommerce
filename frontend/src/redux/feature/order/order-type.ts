@@ -2,16 +2,28 @@ export interface OrderItem {
     uuid: string;
     order_uuid: string;
     product_uuid: string;
-    quantity: number;
+    quantity?: number;
     created_at: string;
     updated_at: string;
     deleted_at: string | null;
     id?: string;
 }
 
-export interface Order {
+export interface SaleOrder {
     uuid: string;
     user_uuid: string;
+    total_price?: string;
+    items: OrderItem[];
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+    id?: string;
+}
+
+export interface BillingOrder {
+    uuid: string;
+    user_uuid: string;
+    total_price?: string;
     items: OrderItem[];
     created_at: string;
     updated_at: string;
@@ -20,7 +32,7 @@ export interface Order {
 }
 
 export interface OrderResponse {
-    data: Order | Order[];
+    data: SaleOrder[] | BillingOrder[] | SaleOrder | BillingOrder;
     totalDocuments?: number;
     limit?: number;
     offset?: number;
@@ -37,7 +49,8 @@ export interface CreateOrderPayload {
 }
 
 export interface OrderState {
-    orders: Order[] | null;
+    saleOrders: SaleOrder[];
+    billingOrders: BillingOrder[];
     loading: boolean;
     error: string | null;
     status: "pending" | "succeed" | "rejected";

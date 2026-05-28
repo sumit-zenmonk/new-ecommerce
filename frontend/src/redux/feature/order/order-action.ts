@@ -6,12 +6,12 @@ import { OrderResponse, CreateOrderPayload } from "./order-type";
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const getOrders = createAsyncThunk<
+export const getSaleOrders = createAsyncThunk<
     OrderResponse,
     { limit?: number; offset?: number },
     { state: RootState }
 >(
-    "order/list",
+    "saleOrder/list",
     async (
         {
             limit = Number(process.env.NEXT_PUBLIC_PAGE_LIMIT) || 10,
@@ -23,7 +23,46 @@ export const getOrders = createAsyncThunk<
             const token = getState().authReducer.token || "";
 
             const res = await fetch(
-                `${API_URL}/order?limit=${limit}&offset=${offset}`,
+                `${API_URL}/sale/order?limit=${limit}&offset=${offset}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: token,
+                    },
+                }
+            );
+
+            const result = await res.json();
+            if (!res.ok) {
+                throw new Error(result.message);
+            }
+
+            return result;
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const getBillingOrders = createAsyncThunk<
+    OrderResponse,
+    { limit?: number; offset?: number },
+    { state: RootState }
+>(
+    "billingOrder/list",
+    async (
+        {
+            limit = Number(process.env.NEXT_PUBLIC_PAGE_LIMIT) || 10,
+            offset = Number(process.env.NEXT_PUBLIC_PAGE_OFFSET) || 0,
+        },
+        { getState, rejectWithValue }
+    ) => {
+        try {
+            const token = getState().authReducer.token || "";
+
+            const res = await fetch(
+                `${API_URL}/billing/order?limit=${limit}&offset=${offset}`,
                 {
                     method: "GET",
                     headers: {
@@ -55,7 +94,7 @@ export const createOrder = createAsyncThunk<
         try {
             const token = getState().authReducer.token || "";
 
-            const res = await fetch(`${API_URL}/order`, {
+            const res = await fetch(`${API_URL}/sale/order`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

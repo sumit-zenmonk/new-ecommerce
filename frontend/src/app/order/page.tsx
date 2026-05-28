@@ -5,8 +5,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Box, Card, CardContent, CircularProgress, Container, Typography } from "@mui/material";
 import { RootState, } from "@/redux/store";
 import styles from "./order.module.css";
-import { getOrders } from "@/redux/feature/order/order-action";
-import { Order } from "@/redux/feature/order/order-type";
+import { getSaleOrders, getBillingOrders } from "@/redux/feature/order/order-action";
+import { SaleOrder, OrderItem } from "@/redux/feature/order/order-type";
 import { enqueueSnackbar } from "notistack";
 import Image from "next/image";
 import Slider from "react-slick";
@@ -19,21 +19,22 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks.ts";
 
 export default function OrderPage() {
     const dispatch = useAppDispatch();
-    const { orders, loading } = useAppSelector((state: RootState) => state.orderReducer);
+    const { saleOrders, billingOrders, loading } = useAppSelector((state: RootState) => state.orderReducer);
     const { catalogProducts, saleProducts } = useAppSelector((state: RootState) => state.productReducer);
     const [limit] = useState(Number(process.env.NEXT_PUBLIC_PAGE_LIMIT) || 10);
     const [offset, setOffset] = useState(Number(process.env.NEXT_PUBLIC_PAGE_OFFSET) || 0);
     const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
-        if (!orders?.length) {
+        if (!saleOrders?.length) {
             fetchOrders();
         }
     }, []);
 
     const fetchOrders = async () => {
         try {
-            const result = await dispatch(getOrders({ limit, offset })).unwrap();
+            const result = await dispatch(getSaleOrders({ limit, offset })).unwrap();
+            await dispatch(getBillingOrders({ limit, offset })).unwrap();
             const fetchedOrders = Array.isArray(result.data) ? result.data : [];
             setOffset(prevOffset => prevOffset + limit);
             if (fetchedOrders.length < limit) setHasMore(false);
@@ -69,16 +70,17 @@ export default function OrderPage() {
 
             <Box id="scrollableDiv" className={styles.scrollWrapper}>
                 <InfiniteScroll
-                    dataLength={orders ? orders.length : 0}
+                    dataLength={saleOrders ? saleOrders.length : 0}
                     next={fetchOrders}
                     hasMore={hasMore}
                     loader={<Box className={styles.loader}><CircularProgress /></Box>}
                     endMessage={<Typography className={styles.endMessage}>Yay! You have seen it all</Typography>}
                     scrollableTarget="scrollableDiv"
                 >
-                    {orders && orders.length > 0 ? (
-                        orders.map((order: Order, idx: number) => {
-                            const descendingIndex = orders.length - 1 - idx;
+                    {saleOrders && saleOrders.length > 0 ? (
+                        saleOrders.map((order: SaleOrder, idx: number) => {
+                            const descendingIndex = saleOrders.length - 1 - idx;
+                            const billingOrder = billingOrders ? billingOrders.find((item) => item.uuid === order.uuid) : null;
 
                             return (
                                 <Card key={order.uuid} className={styles.orderCard}>
@@ -117,9 +119,13 @@ export default function OrderPage() {
                                             Order ID: {order.uuid}
                                         </Typography>
 
+                                        <Typography variant="h6">
+                                            Total Price: {billingOrder?.total_price}
+                                        </Typography>
+
                                         <Box className={styles.slidercomp}>
                                             <Slider {...sliderSettings}>
-                                                {order.items.map((item) => {
+                                                {order.items.map((item: OrderItem) => {
                                                     const product = catalogProducts.find((p) => p.uuid === item.product_uuid);
                                                     const saleProduct = saleProducts.find((p) => p.uuid === item.product_uuid);
 

@@ -32,6 +32,7 @@ import * as SaleProductModule from './module/sale-module/feature/product/product
 // Billing Module
 import { billingDataSource } from './module/billing-module/infrastructure/database/data-source';
 import { WalletModule } from './module/billing-module/feature/wallet/wallet.module';
+import * as billingOrderModule from './module/billing-module/feature/order/order.module';
 import * as billingCronModule from './module/billing-module/infrastructure/cron/cron.module';
 
 // Shipment Module
@@ -85,7 +86,6 @@ import * as ShipmentSaleProductModule from './module/shipment-module/feature/pro
     SaleCronModule.CronModule,
     SaleProductModule.ProductModule,
 
-
     // billing Modules
     TypeOrmModule.forRoot({
       name: process.env.DB_POSTGRES_billing_SCHEMA || 'billing_schema',
@@ -94,6 +94,7 @@ import * as ShipmentSaleProductModule from './module/shipment-module/feature/pro
       retryDelay: 5000
     }),
     WalletModule,
+    billingOrderModule.OrderModule,
     billingCronModule.CronModule,
 
     // shipment Modules

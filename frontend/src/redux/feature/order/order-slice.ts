@@ -1,11 +1,12 @@
 "use client";
 
 import { createSlice } from "@reduxjs/toolkit";
-import { Order, OrderState } from "./order-type";
-import { createOrder, getOrders } from "./order-action";
+import { BillingOrder, SaleOrder, OrderState } from "./order-type";
+import { createOrder, getBillingOrders, getSaleOrders } from "./order-action";
 
 const initialState: OrderState = {
-    orders: null,
+    saleOrders: [],
+    billingOrders: [],
     loading: false,
     error: null,
     status: "pending",
@@ -20,43 +21,78 @@ const orderSlice = createSlice({
             state.status = "pending";
         },
         clearOrderState: (state) => {
-            state.orders = null;
+            state.saleOrders = [];
+            state.billingOrders = [];
             state.error = null;
             state.status = "pending";
         },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getOrders.pending, (state) => {
+            .addCase(getSaleOrders.pending, (state) => {
                 state.loading = true;
                 state.status = "pending";
             })
-            .addCase(getOrders.fulfilled, (state, action) => {
+            .addCase(getSaleOrders.fulfilled, (state, action) => {
                 state.loading = false;
                 state.status = "succeed";
 
-                const newOrders = action.payload.data as Order[];
+                const newOrders = action.payload.data as SaleOrder[];
 
-                if (state.orders) {
+                if (state.saleOrders) {
                     const uuids = new Set(
-                        state.orders.map((order) => order.uuid)
+                        state.saleOrders.map((order) => order.uuid)
                     );
 
                     const filteredOrders = newOrders.filter(
                         (order) => !uuids.has(order.uuid)
                     );
 
-                    state.orders = [
-                        ...state.orders,
+                    state.saleOrders = [
+                        ...state.saleOrders,
                         ...filteredOrders,
                     ];
                 } else {
-                    state.orders = newOrders;
+                    state.saleOrders = newOrders;
                 }
 
                 state.error = null;
             })
-            .addCase(getOrders.rejected, (state, action) => {
+            .addCase(getSaleOrders.rejected, (state, action) => {
+                state.loading = false;
+                state.status = "rejected";
+                state.error = action.payload as string;
+            })
+            .addCase(getBillingOrders.pending, (state) => {
+                state.loading = true;
+                state.status = "pending";
+            })
+            .addCase(getBillingOrders.fulfilled, (state, action) => {
+                state.loading = false;
+                state.status = "succeed";
+
+                const newOrders = action.payload.data as BillingOrder[];
+
+                if (state.billingOrders) {
+                    const uuids = new Set(
+                        state.billingOrders.map((order) => order.uuid)
+                    );
+
+                    const filteredOrders = newOrders.filter(
+                        (order) => !uuids.has(order.uuid)
+                    );
+
+                    state.billingOrders = [
+                        ...state.billingOrders,
+                        ...filteredOrders,
+                    ];
+                } else {
+                    state.billingOrders = newOrders;
+                }
+
+                state.error = null;
+            })
+            .addCase(getBillingOrders.rejected, (state, action) => {
                 state.loading = false;
                 state.status = "rejected";
                 state.error = action.payload as string;
@@ -69,12 +105,12 @@ const orderSlice = createSlice({
                 state.loading = false;
                 state.status = "succeed";
 
-                const order = action.payload.data as Order;
+                const order = action.payload.data as SaleOrder;
 
-                if (state.orders) {
-                    state.orders.unshift(order);
+                if (state.saleOrders) {
+                    state.saleOrders.unshift(order);
                 } else {
-                    state.orders = [order];
+                    state.saleOrders = [order];
                 }
 
                 state.error = null;
