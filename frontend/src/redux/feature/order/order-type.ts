@@ -1,3 +1,5 @@
+import { OrderPaymentStatusEnum, OrderStatusEnum } from "@/enum/order.enum";
+
 export interface OrderItem {
     uuid: string;
     order_uuid: string;
@@ -31,8 +33,34 @@ export interface BillingOrder {
     id?: string;
 }
 
+export interface Address {
+    uuid: string;
+    user_uuid: string;
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+    isDefault: boolean;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+}
+
+export interface ShipmentOrder {
+    uuid: string;
+    user_uuid: string;
+    address_uuid: string;
+    payment_status: OrderPaymentStatusEnum;
+    order_status: OrderStatusEnum;
+    address: Address;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+}
+
 export interface OrderResponse {
-    data: SaleOrder[] | BillingOrder[] | SaleOrder | BillingOrder;
+    data: SaleOrder[] | BillingOrder[] | SaleOrder | BillingOrder | ShipmentOrder | ShipmentOrder[];
     totalDocuments?: number;
     limit?: number;
     offset?: number;
@@ -51,6 +79,7 @@ export interface CreateOrderPayload {
 export interface OrderState {
     saleOrders: SaleOrder[];
     billingOrders: BillingOrder[];
+    shipmentOrders: ShipmentOrder[];
     loading: boolean;
     error: string | null;
     status: "pending" | "succeed" | "rejected";

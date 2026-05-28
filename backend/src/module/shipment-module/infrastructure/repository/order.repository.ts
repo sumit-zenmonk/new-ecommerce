@@ -23,6 +23,7 @@ export class OrderRepository extends Repository<OrderEntity> {
         const [data, total] = await this.findAndCount({
             where: { user_uuid: user.uuid },
             relations: {
+                address: true,
             },
             order: {
                 created_at: 'DESC'

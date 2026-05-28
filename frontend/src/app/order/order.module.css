@@ -82,6 +82,13 @@
     justify-content: center; */
     /* align-items: center;  */
     gap: 1rem;
+    position: relative;
+}
+
+.orderDetailMetaData {
+    position: absolute;
+    top: 20;
+    right: 20;
 }
 
 .stepper {

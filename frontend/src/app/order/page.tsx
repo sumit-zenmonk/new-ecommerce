@@ -5,13 +5,13 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Box, Card, CardContent, CircularProgress, Container, Typography } from "@mui/material";
 import { RootState, } from "@/redux/store";
 import styles from "./order.module.css";
-import { getSaleOrders, getBillingOrders } from "@/redux/feature/order/order-action";
+import { getSaleOrders, getBillingOrders, getShipmentOrders } from "@/redux/feature/order/order-action";
 import { SaleOrder, OrderItem } from "@/redux/feature/order/order-type";
 import { enqueueSnackbar } from "notistack";
 import Image from "next/image";
 import Slider from "react-slick";
 import { sliderSettings } from "../../config/slider";
-import { OrderStatusEnum } from "@/enum/order.enum";
+import { OrderPaymentStatusEnum, OrderStatusEnum } from "@/enum/order.enum";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
@@ -19,7 +19,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks.ts";
 
 export default function OrderPage() {
     const dispatch = useAppDispatch();
-    const { saleOrders, billingOrders, loading } = useAppSelector((state: RootState) => state.orderReducer);
+    const { saleOrders, billingOrders, shipmentOrders, loading } = useAppSelector((state: RootState) => state.orderReducer);
     const { catalogProducts, saleProducts } = useAppSelector((state: RootState) => state.productReducer);
     const [limit] = useState(Number(process.env.NEXT_PUBLIC_PAGE_LIMIT) || 10);
     const [offset, setOffset] = useState(Number(process.env.NEXT_PUBLIC_PAGE_OFFSET) || 0);
@@ -35,6 +35,7 @@ export default function OrderPage() {
         try {
             const result = await dispatch(getSaleOrders({ limit, offset })).unwrap();
             await dispatch(getBillingOrders({ limit, offset })).unwrap();
+            await dispatch(getShipmentOrders({ limit, offset })).unwrap();
             const fetchedOrders = Array.isArray(result.data) ? result.data : [];
             setOffset(prevOffset => prevOffset + limit);
             if (fetchedOrders.length < limit) setHasMore(false);
@@ -81,6 +82,7 @@ export default function OrderPage() {
                         saleOrders.map((order: SaleOrder, idx: number) => {
                             const descendingIndex = saleOrders.length - 1 - idx;
                             const billingOrder = billingOrders ? billingOrders.find((item) => item.uuid === order.uuid) : null;
+                            const shipmentOrder = shipmentOrders ? shipmentOrders.find((item) => item.uuid === order.uuid) : null;
 
                             return (
                                 <Card key={order.uuid} className={styles.orderCard}>
@@ -158,6 +160,22 @@ export default function OrderPage() {
                                                     );
                                                 })}
                                             </Slider>
+                                        </Box>
+
+                                        <Box className={styles.orderDetailMetaData}>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{ mt: 1, textAlign: "center" }}
+                                            >
+                                                Payment Status: {shipmentOrder?.payment_status.toUpperCase() || OrderPaymentStatusEnum.PENDING.toUpperCase()}
+                                            </Typography>
+
+                                            <Typography
+                                                variant="body2"
+                                                sx={{ mt: 1, textAlign: "center" }}
+                                            >
+                                                Order Status: {shipmentOrder?.order_status.toUpperCase() || OrderStatusEnum.PENDING.toUpperCase()}
+                                            </Typography>
                                         </Box>
                                     </CardContent>
                                 </Card>

@@ -84,6 +84,45 @@ export const getBillingOrders = createAsyncThunk<
     }
 );
 
+export const getShipmentOrders = createAsyncThunk<
+    OrderResponse,
+    { limit?: number; offset?: number },
+    { state: RootState }
+>(
+    "shipmentOrder/list",
+    async (
+        {
+            limit = Number(process.env.NEXT_PUBLIC_PAGE_LIMIT) || 10,
+            offset = Number(process.env.NEXT_PUBLIC_PAGE_OFFSET) || 0,
+        },
+        { getState, rejectWithValue }
+    ) => {
+        try {
+            const token = getState().authReducer.token || "";
+
+            const res = await fetch(
+                `${API_URL}/shipment/order?limit=${limit}&offset=${offset}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: token,
+                    },
+                }
+            );
+
+            const result = await res.json();
+            if (!res.ok) {
+                throw new Error(result.message);
+            }
+console.log(JSON.stringify(result));
+            return result;
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 export const createOrder = createAsyncThunk<
     OrderResponse,
     CreateOrderPayload,

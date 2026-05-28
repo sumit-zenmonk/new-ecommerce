@@ -1,12 +1,13 @@
 "use client";
 
 import { createSlice } from "@reduxjs/toolkit";
-import { BillingOrder, SaleOrder, OrderState } from "./order-type";
-import { createOrder, getBillingOrders, getSaleOrders } from "./order-action";
+import { BillingOrder, SaleOrder, OrderState, ShipmentOrder } from "./order-type";
+import { createOrder, getBillingOrders, getSaleOrders, getShipmentOrders } from "./order-action";
 
 const initialState: OrderState = {
     saleOrders: [],
     billingOrders: [],
+    shipmentOrders: [],
     loading: false,
     error: null,
     status: "pending",
@@ -23,6 +24,7 @@ const orderSlice = createSlice({
         clearOrderState: (state) => {
             state.saleOrders = [];
             state.billingOrders = [];
+            state.shipmentOrders = [];
             state.error = null;
             state.status = "pending";
         },
@@ -93,6 +95,30 @@ const orderSlice = createSlice({
                 state.error = null;
             })
             .addCase(getBillingOrders.rejected, (state, action) => {
+                state.loading = false;
+                state.status = "rejected";
+                state.error = action.payload as string;
+            })
+            .addCase(getShipmentOrders.pending, (state) => {
+                state.loading = true;
+                state.status = "pending";
+            })
+            .addCase(getShipmentOrders.fulfilled, (state, action) => {
+                state.loading = false;
+                state.status = "succeed";
+
+                const newOrders = action.payload.data as ShipmentOrder[];
+                const uuids = new Set(state.shipmentOrders.map((order) => order.uuid));
+                const filteredOrders = newOrders.filter((order) => !uuids.has(order.uuid));
+
+                state.shipmentOrders = [
+                    ...state.shipmentOrders,
+                    ...filteredOrders,
+                ];
+
+                state.error = null;
+            })
+            .addCase(getShipmentOrders.rejected, (state, action) => {
                 state.loading = false;
                 state.status = "rejected";
                 state.error = action.payload as string;
