@@ -23,6 +23,7 @@ export class CreateOrderService {
                 this.orderItemRepository.createOrderItem({
                     order_uuid: order.uuid,
                     product_uuid: item.product_uuid,
+                    quantity: item.quantity
                 })
             )
         );
@@ -35,7 +36,6 @@ export class CreateOrderService {
         //     RoutingKeyEnum.ORDER_CREATED,
         //     {
         //         order_uuid: order.uuid,
-        //         cart_uuid,
         //         user_uuid: user.uuid,
         //         total_price,
         //         created_at: new Date(),
@@ -50,6 +50,8 @@ export class CreateOrderService {
                 order_id: order.id,
                 order_uuid: order.uuid,
                 user_uuid: user.uuid,
+                total_price: body.total_price,
+                address_uuid: body.address_uuid,
                 items: items.map((item, index) => ({
                     uuid: orderItems[index].uuid,
                     id: orderItems[index].id,

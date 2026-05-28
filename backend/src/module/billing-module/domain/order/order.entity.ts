@@ -1,6 +1,5 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { UserEntity } from "../user/user.entity";
-import { OrderPaymentStatusEnum, OrderStatusEnum } from "./order.enum";
 import { OrderItemEntity } from "../order-item/order-item.entity";
 
 @Entity('order')
@@ -18,6 +17,9 @@ export class OrderEntity {
 
     @Column({ type: "uuid", nullable: false })
     user_uuid: string;
+
+    @Column({ type: "decimal", precision: 12, scale: 2, nullable: false, default: 0, })
+    total_price: number;
 
     @ManyToOne(() => UserEntity, (user) => user.orders)
     @JoinColumn({ name: "user_uuid" })

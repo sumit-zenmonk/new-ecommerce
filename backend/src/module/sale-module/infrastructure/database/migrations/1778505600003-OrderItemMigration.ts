@@ -11,6 +11,7 @@ export class orderItemMigration1778505600003 implements MigrationInterface {
                 { name: "id", type: "bigint", isGenerated: true, generationStrategy: "increment", isUnique: true, isNullable: false },
                 { name: "order_uuid", type: "uuid", isNullable: false },
                 { name: "product_uuid", type: "uuid", isNullable: false },
+                { name: "quantity", type: "integer", default: 1, isNullable: false },
                 { name: "created_at", type: "timestamp", default: "now()" },
                 { name: "updated_at", type: "timestamp", default: "now()" },
                 { name: "deleted_at", type: "timestamp", isNullable: true }

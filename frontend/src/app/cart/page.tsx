@@ -16,7 +16,7 @@ import UserAddressModal from "@/component/user-address-modal/user-address-modal"
 export default function CartPage() {
     const dispatch = useAppDispatch();
     const { cart, loading } = useAppSelector((state: RootState) => state.cartReducer);
-    const { saleProducts } = useAppSelector((state: RootState) => state.productReducer);
+    const { saleProducts, ShipmentProducts } = useAppSelector((state: RootState) => state.productReducer);
     const { user } = useAppSelector((state: RootState) => state.authReducer);
     const [openUserAddressModal, setOpenUserAddressModal] = useState(false);
 
@@ -49,14 +49,25 @@ export default function CartPage() {
         }
     };
 
-    const handlePlaceOrder = async () => {
+    const handlePlaceOrder = async (address_uuid: string) => {
         try {
             if (!cart?.items?.length) {
-                enqueueSnackbar("Cart is empty", { variant: "warning", });
+                enqueueSnackbar("Cart is empty", {
+                    variant: "warning",
+                });
                 return;
             }
 
             const payload = {
+                total_price: cart.items.reduce((total, item) => {
+                    const saleProduct = saleProducts.find(
+                        (product) => product.uuid === item.product_uuid
+                    );
+                    return total + (
+                        Number(saleProduct?.price || 0) * item.quantity
+                    );
+                }, 0),
+                address_uuid,
                 items: cart.items.map((item) => ({
                     product_uuid: item.product_uuid,
                     quantity: item.quantity,
@@ -65,9 +76,10 @@ export default function CartPage() {
 
             await dispatch(createOrder(payload)).unwrap();
             dispatch(clearCartState());
+            setOpenUserAddressModal(false);
             enqueueSnackbar("Order placed successfully", { variant: "success", });
         } catch (error: any) {
-            enqueueSnackbar(error.message, { variant: "error", });
+            enqueueSnackbar(error, { variant: "error", });
         }
     };
 
@@ -218,7 +230,7 @@ export default function CartPage() {
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    onClick={handlePlaceOrder}
+                                    onClick={() => setOpenUserAddressModal(true)}
                                 >
                                     Place Order
                                 </Button>
@@ -240,7 +252,7 @@ export default function CartPage() {
                 )}
             </Box>
 
-            <UserAddressModal isOpen={openUserAddressModal} onClose={handleAddAddressClose} />
+            <UserAddressModal isOpen={openUserAddressModal} onClose={handleAddAddressClose} onSelectAddress={handlePlaceOrder} />
         </Container>
     );
 }

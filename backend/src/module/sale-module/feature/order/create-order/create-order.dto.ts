@@ -11,6 +11,13 @@ export class OrderItemDto {
 }
 
 export class CreateOrderDto {
+    @IsNumber()
+    @Min(1)
+    total_price: number;
+
+    @IsUUID()
+    address_uuid: string;
+
     @IsArray()
     @ArrayNotEmpty({ message: 'Order must have at least one item' })
     @ValidateNested({ each: true })

@@ -37,6 +37,7 @@ import * as billingCronModule from './module/billing-module/infrastructure/cron/
 // Shipment Module
 import { shipmentDataSource } from './module/shipment-module/infrastructure/database/data-source';
 import { UserAddressModule } from './module/shipment-module/feature/user/user-address.module';
+import * as ShipmentSaleProductModule from './module/shipment-module/feature/product/product.module';
 
 @Module({
   imports: [
@@ -103,6 +104,7 @@ import { UserAddressModule } from './module/shipment-module/feature/user/user-ad
       retryDelay: 5000
     }),
     UserAddressModule,
+    ShipmentSaleProductModule.ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserRepository, JwtHelperService],

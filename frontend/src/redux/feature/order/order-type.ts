@@ -28,6 +28,8 @@ export interface OrderResponse {
 }
 
 export interface CreateOrderPayload {
+    total_price: number;
+    address_uuid: string;
     items: {
         product_uuid: string;
         quantity: number;

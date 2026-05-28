@@ -26,6 +26,8 @@ export interface OrderCreatedMQEventPayload {
     order_id: number;
     order_uuid: string;
     user_uuid: string;
+    total_price: number;
+    address_uuid: string;
     items: {
         id: number;
         uuid: string;

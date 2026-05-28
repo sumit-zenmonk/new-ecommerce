@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, Generated, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, Generated, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { UserEntity } from "../user/user.entity";
+import { OrderEntity } from "../order/order.entity";
 
 @Entity('user_address')
 export class UserAddressEntity {
@@ -38,6 +39,9 @@ export class UserAddressEntity {
     @ManyToOne(() => UserEntity, (user) => user.addresses)
     @JoinColumn({ name: "user_uuid" })
     user: UserEntity;
+
+    @OneToMany(() => OrderEntity, (order) => order.address)
+    orders: OrderEntity[];
 
     @CreateDateColumn()
     created_at: Date;

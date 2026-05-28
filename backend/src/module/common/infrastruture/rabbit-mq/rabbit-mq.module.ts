@@ -24,14 +24,17 @@ import * as BillingOrderRepo from 'src/module/billing-module/infrastructure/repo
 import * as BillingOrderItemRepo from 'src/module/billing-module/infrastructure/repository/order.item.repository';
 import * as BillingUserRegisterService from 'src/module/billing-module/feature/user/user-register/user-register.service';
 import * as BillingOrderCreatedService from 'src/module/billing-module/feature/order/order-created/order-created.handler';
-import * as BillingUserConsumer from 'src/module/billing-module/infrastructure/rabbit-mq-consumer/user/user-registered/user-registered.consumer';
+import * as BillingUserRegisteredConsumer from 'src/module/billing-module/infrastructure/rabbit-mq-consumer/user/user-registered/user-registered.consumer';
 import * as BillingOrderCreatedConsumer from 'src/module/billing-module/infrastructure/rabbit-mq-consumer/order/order-created/order-created.consumer';
 
 // Shipment Module
 import * as ShipmentInboxRepo from 'src/module/shipment-module/infrastructure/repository/inbox.repository';
 import * as ShipmentUserRepo from 'src/module/shipment-module/infrastructure/repository/user.repository';
+import * as ShipmentOrderRepo from 'src/module/shipment-module/infrastructure/repository/order.repository';
 import * as ShipmentUserRegisterService from 'src/module/shipment-module/feature/user/user-register/user-register.handler';
-import * as ShipmentUserConsumer from 'src/module/shipment-module/infrastructure/rabbit-mq-consumer/user/user-registered/user-registered.consumer';
+import * as ShipmentOrderCreatedService from 'src/module/shipment-module/feature/order/order-created/order-created.handler';
+import * as ShipmentUserRegisteredConsumer from 'src/module/shipment-module/infrastructure/rabbit-mq-consumer/user/user-registered/user-registered.consumer';
+import * as ShipmentOrderCreatedConsumer from 'src/module/shipment-module/infrastructure/rabbit-mq-consumer/order/order-created/order-created.consumer';
 
 @Global()
 @Module({
@@ -62,14 +65,17 @@ import * as ShipmentUserConsumer from 'src/module/shipment-module/infrastructure
         BillingOrderItemRepo.OrderItemRepository,
         BillingUserRegisterService.UserRegisterService,
         BillingOrderCreatedService.OrderCreatedService,
-        BillingUserConsumer.UserRegisteredConsumer,
+        BillingUserRegisteredConsumer.UserRegisteredConsumer,
         BillingOrderCreatedConsumer.OrderCreatedConsumer,
 
         // Shipment Module
         ShipmentUserRepo.UserRepository,
+        ShipmentOrderRepo.OrderRepository,
         ShipmentInboxRepo.InboxRepository,
         ShipmentUserRegisterService.UserRegisterService,
-        ShipmentUserConsumer.UserRegisteredConsumer,
+        ShipmentOrderCreatedService.OrderCreatedService,
+        ShipmentUserRegisteredConsumer.UserRegisteredConsumer,
+        ShipmentOrderCreatedConsumer.OrderCreatedConsumer,
     ],
     exports: [RabbitMQService],
 })

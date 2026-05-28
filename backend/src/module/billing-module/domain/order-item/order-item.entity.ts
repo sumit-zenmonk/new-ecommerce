@@ -20,9 +20,6 @@ export class OrderItemEntity {
     @Column({ type: "uuid", nullable: false })
     product_uuid: string;
 
-    @Column({ type: "integer", nullable: false, default: 1, })
-    quantity: number;
-
     @ManyToOne(() => OrderEntity, (user) => user.items)
     @JoinColumn({ name: "order_uuid" })
     order: OrderEntity;

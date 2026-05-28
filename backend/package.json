@@ -44,6 +44,7 @@
     "migration:billing:revert": "npm run typeorm -- -d dist/module/billing-module/infrastructure/database/data-source.js migration:revert",
 
     "seed:shipment:user": "ts-node -r tsconfig-paths/register src/module/shipment-module/infrastructure/database/seed/user.seed.ts",
+    "seed:shipment:product": "ts-node -r tsconfig-paths/register src/module/shipment-module/infrastructure/database/seed/product.seed.ts",
     "migration:shipment:generate": "npm run typeorm -- -d dist/module/shipment-module/infrastructure/database/data-source.js migration:generate src/module/shipment-module/infrastructure/database/migrations/InitMigration",
     "migration:shipment:run": "npm run typeorm -- -d dist/module/shipment-module/infrastructure/database/data-source.js migration:run",
     "migration:shipment:revert": "npm run typeorm -- -d dist/module/shipment-module/infrastructure/database/data-source.js migration:revert"

@@ -5,7 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Box, Button, Card, CardContent, CardMedia, CircularProgress, Container, Typography } from "@mui/material";
 import styles from "./home.module.css";
 import { RootState } from "@/redux/store";
-import { getCatalogProducts, getSaleProducts } from "@/redux/feature/product/product-action";
+import { getCatalogProducts, getSaleProducts, getShipmentProducts } from "@/redux/feature/product/product-action";
 import { enqueueSnackbar } from "notistack";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks.ts";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -14,7 +14,7 @@ import { addToCart } from "@/redux/feature/cart/cart-slice";
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  const { catalogProducts, saleProducts, totalDocuments, loading } = useAppSelector((state: RootState) => state.productReducer);
+  const { catalogProducts, saleProducts, ShipmentProducts, totalDocuments, loading } = useAppSelector((state: RootState) => state.productReducer);
   const { cart } = useAppSelector((state: RootState) => state.cartReducer);
   const { user } = useAppSelector((state: RootState) => state.authReducer);
   const [offset, setOffset] = useState(Number(process.env.NEXT_PUBLIC_PAGE_OFFSET) || 0);
@@ -33,6 +33,7 @@ export default function Home() {
 
       await dispatch(getCatalogProducts({ limit, offset: 0 })).unwrap();
       await dispatch(getSaleProducts({ limit, offset: 0 })).unwrap();
+      await dispatch(getShipmentProducts({ limit, offset: 0 })).unwrap();
     } catch (err: any) {
       console.log(err);
       enqueueSnackbar(err, { variant: "warning" });
@@ -49,6 +50,7 @@ export default function Home() {
 
       const response = await dispatch(getCatalogProducts({ limit, offset: newOffset })).unwrap();
       await dispatch(getSaleProducts({ limit, offset: newOffset })).unwrap();
+      await dispatch(getShipmentProducts({ limit, offset: newOffset })).unwrap();
 
       if (!response.data.length) {
         setHasMore(false);
@@ -111,6 +113,7 @@ export default function Home() {
           <Box className={styles.productWrapper}>
             {catalogProducts && catalogProducts.map((product: Product) => {
               const saleProduct = saleProducts ? saleProducts.find((item) => item.uuid === product.uuid) : null;
+              const shipmentProduct = ShipmentProducts ? ShipmentProducts.find((item) => item.uuid === product.uuid) : null;
 
               return (
                 <Card
@@ -134,6 +137,10 @@ export default function Home() {
 
                     <Typography className={styles.price}>
                       Price: ${saleProduct?.price || 0}
+                    </Typography>
+
+                    <Typography className={styles.stock}>
+                      Stock: ${shipmentProduct?.stock || 0}
                     </Typography>
 
                     <Button

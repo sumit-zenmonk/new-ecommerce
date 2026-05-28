@@ -8,6 +8,7 @@ import { UserEntity } from "../../domain/user/user.entity";
 import { UserAddressEntity } from "../../domain/user_address/user.address.entity";
 import { OrderEntity } from "../../domain/order/order.entity";
 import { OutboxEntity } from "../../domain/outbox/outbox.entity";
+import { ProductEntity } from "../../domain/product/product.entity";
 
 const options: DataSourceOptions = {
     type: process.env.DB_POSTGRES_TYPE as any,
@@ -18,7 +19,7 @@ const options: DataSourceOptions = {
     database: process.env.DB_POSTGRES_DATABASE,
     entities: [
         UserEntity, InboxEntity, OutboxEntity,
-        UserAddressEntity, OrderEntity,
+        UserAddressEntity, OrderEntity, ProductEntity
     ],
     schema: process.env.DB_POSTGRES_SHIPMENT_SCHEMA || 'shipment_schema',
     synchronize: false,

@@ -16,9 +16,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 interface AddressModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onSelectAddress: (uuid: string) => void;
 }
 
-export default function UserAddressModal({ isOpen, onClose }: AddressModalProps) {
+export default function UserAddressModal({ isOpen, onClose, onSelectAddress }: AddressModalProps) {
     const dispatch = useAppDispatch();
     const { addresses, loading, error } = useAppSelector((state: RootState) => state.userAddressReducer);
 
@@ -129,7 +130,11 @@ export default function UserAddressModal({ isOpen, onClose }: AddressModalProps)
 
                     <List className={styles.addressList}>
                         {addresses?.map((addr: Address) => (
-                            <ListItem key={addr.uuid} className={addr.isDefault ? styles.DefaultlistItem : styles.listItem}>
+                            <ListItem key={addr.uuid} className={addr.isDefault ? styles.DefaultlistItem : styles.listItem}
+                                onClick={() => {
+                                    onSelectAddress(addr.uuid);
+                                    onClose();
+                                }}>
                                 <ListItemText
                                     primary={`${addr.street}, ${addr.city}, ${addr.state}`}
                                     secondary={`${addr.postalCode}, ${addr.country} ${addr.isDefault ? "(Default)" : ""

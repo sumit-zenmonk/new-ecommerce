@@ -2,11 +2,12 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import { ProductState } from "./product-type";
-import { getCatalogProducts, getSaleProducts, } from "./product-action";
+import { getCatalogProducts, getSaleProducts, getShipmentProducts, } from "./product-action";
 
 const initialState: ProductState = {
     catalogProducts: [],
     saleProducts: [],
+    ShipmentProducts: [],
     loading: false,
     error: null,
     status: "pending",
@@ -87,6 +88,32 @@ const productSlice = createSlice({
                 state.status = "succeed";
             })
             .addCase(getSaleProducts.rejected, (state, action) => {
+                state.loading = false;
+                state.status = "rejected";
+                state.error = action.payload as string;
+            })
+            .addCase(getShipmentProducts.fulfilled, (state, action) => {
+                state.loading = false;
+
+                if (action.payload.offset === 0) {
+                    state.ShipmentProducts = action.payload.data;
+                } else {
+                    const merged = [
+                        ...state.ShipmentProducts,
+                        ...action.payload.data,
+                    ];
+
+                    state.ShipmentProducts = Array.from(
+                        new Map(
+                            merged.map((item) => [item.uuid, item])
+                        ).values()
+                    );
+                }
+
+                state.error = null;
+                state.status = "succeed";
+            })
+            .addCase(getShipmentProducts.rejected, (state, action) => {
                 state.loading = false;
                 state.status = "rejected";
                 state.error = action.payload as string;

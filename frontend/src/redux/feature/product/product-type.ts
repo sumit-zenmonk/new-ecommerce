@@ -16,6 +16,15 @@ export interface SaleProduct {
     deleted_at: string | null;
 }
 
+export interface ShipmentProduct {
+    uuid: string;
+    stock: number;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
+}
+
+"550e8400-e29b-41d4-a716-446655440001"
 export interface ProductResponse<T> {
     data: T[];
     limit: number;
@@ -25,12 +34,13 @@ export interface ProductResponse<T> {
 }
 
 export interface ProductState {
-  catalogProducts: Product[];
-  saleProducts: SaleProduct[];
-  loading: boolean;
-  error: string | null;
-  status: "pending" | "succeed" | "rejected";
-  limit: number;
-  offset: number;
-  totalDocuments: number;
+    catalogProducts: Product[];
+    saleProducts: SaleProduct[];
+    ShipmentProducts: ShipmentProduct[];
+    loading: boolean;
+    error: string | null;
+    status: "pending" | "succeed" | "rejected";
+    limit: number;
+    offset: number;
+    totalDocuments: number;
 }

@@ -11,7 +11,15 @@ export class OrderCreatedService {
     ) { }
 
     async handle(order: OrderCreatedMQEventPayload) {
-        await this.orderRepository.createOrder({ user_uuid: order.user_uuid, uuid: order.order_uuid, id: order.order_id, created_at: order.created_at });
+        await this.orderRepository.createOrder(
+            {
+                user_uuid: order.user_uuid,
+                uuid: order.order_uuid,
+                id: order.order_id,
+                created_at: order.created_at,
+                total_price: order.total_price
+            }
+        );
         await Promise.all(
             order.items.map(item =>
                 this.orderItemRepository.createOrderItem({
@@ -19,7 +27,6 @@ export class OrderCreatedService {
                     product_uuid: item.product_uuid,
                     uuid: item.uuid,
                     id: item.id,
-                    quantity: item.quantity,
                 })
             )
         );
