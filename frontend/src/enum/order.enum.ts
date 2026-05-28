@@ -8,6 +8,6 @@ export enum OrderPaymentStatusEnum {
 export enum OrderStatusEnum {
     PLACED = 'placed',
     BILLED = 'billed',
+    SHIPPED = 'shipped',
     DELIVERED = 'delivered',
-    RETURNED = 'returned'
 }

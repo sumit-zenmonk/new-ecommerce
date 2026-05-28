@@ -49,8 +49,8 @@ export default function OrderPage() {
     const orderSteps = [
         OrderStatusEnum.PLACED,
         OrderStatusEnum.BILLED,
+        OrderStatusEnum.SHIPPED,
         OrderStatusEnum.DELIVERED,
-        OrderStatusEnum.RETURNED,
     ];
 
     const getActiveStep = (status: OrderStatusEnum) => {
