@@ -28,7 +28,7 @@ export default function OrderPage() {
 
     useEffect(() => {
         // if (!saleOrders?.length) {
-            fetchOrders();
+        fetchOrders();
         // }
     }, []);
 
@@ -134,8 +134,10 @@ export default function OrderPage() {
                                         </Typography>
 
                                         {
-                                            billingOrder?.payment_status == OrderPaymentStatusEnum.PENDING
-                                            &&
+                                            (
+                                                billingOrder?.payment_status == OrderPaymentStatusEnum.PENDING ||
+                                                billingOrder?.payment_status == OrderPaymentStatusEnum.FAILED
+                                            ) &&
                                             <Button onClick={() => handlePay(order.uuid)}>
                                                 Pay
                                             </Button>
