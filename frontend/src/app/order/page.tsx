@@ -95,7 +95,7 @@ export default function OrderPage() {
                             return (
                                 <Card key={order.uuid} className={styles.orderCard}>
 
-                                    <Stepper activeStep={getActiveStep((order.user_uuid) as OrderStatusEnum)} alternativeLabel className={styles.stepper}>
+                                    <Stepper activeStep={getActiveStep((shipmentOrder?.order_status) as OrderStatusEnum)} alternativeLabel className={styles.stepper}>
                                         {orderSteps.map((step) => (
                                             <Step
                                                 key={step}
@@ -106,7 +106,7 @@ export default function OrderPage() {
                                                 }
                                             >
                                                 <StepLabel
-                                                    // error={order.payment_status === OrderPaymentStatusEnum.REFUND && order.returned_from_status === step}
+                                                    // error={billingOrder?.payment_status === OrderPaymentStatusEnum.REFUND && order.returned_from_status === step}
                                                     sx={{
                                                         "& .MuiStepLabel-label": {
                                                             textTransform: "capitalize",
