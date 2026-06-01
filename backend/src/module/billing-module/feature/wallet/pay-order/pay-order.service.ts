@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { Transactional } from "typeorm-transactional";
+import { runOnTransactionCommit, Transactional } from "typeorm-transactional";
 import { UserEntity } from "src/module/user-module/domain/user/user.entity";
 import { PayOrderDto } from "./pay-order.dto";
 import { WalletRepository } from "src/module/billing-module/infrastructure/repository/wallet.repository";
@@ -84,25 +84,25 @@ export class PayOrderService {
                 },
             });
 
-            // transaction commits automatically here
+            runOnTransactionCommit(async () => {
+                await this.socketService.emitToUser(
+                    user.uuid,
+                    SocketEventNameEnum.ORDER__PAYMENT_STATUS_CHANGED,
+                    {
+                        order_uuid,
+                        payment_status: OrderPaymentStatusEnum.PAID,
+                    },
+                );
 
-            await this.socketService.emitToUser(
-                user.uuid,
-                SocketEventNameEnum.ORDER__PAYMENT_STATUS_CHANGED,
-                {
-                    order_uuid,
-                    payment_status: OrderPaymentStatusEnum.PAID,
-                },
-            );
-
-            await this.socketService.emitToUser(
-                user.uuid,
-                SocketEventNameEnum.ORDER_STATUS_CHANGED,
-                {
-                    order_uuid,
-                    order_status: OrderStatusEnum.BILLED,
-                },
-            );
+                await this.socketService.emitToUser(
+                    user.uuid,
+                    SocketEventNameEnum.ORDER_STATUS_CHANGED,
+                    {
+                        order_uuid,
+                        order_status: OrderStatusEnum.BILLED,
+                    },
+                );
+            });
 
             return;
         } catch (error) {

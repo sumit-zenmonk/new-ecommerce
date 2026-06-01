@@ -7,7 +7,7 @@ import { SocketEventNameEnum } from "src/module/common/infrastruture/socket/sock
 import { ProductRepository } from "src/module/shipment-module/infrastructure/repository/product.repository";
 import { OutboxRepository } from "src/module/shipment-module/infrastructure/repository/outbox.repository";
 import { ExchangeNameEnum, RoutingKeyEnum } from "src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.enum";
-import { Transactional } from "typeorm-transactional";
+import { runOnTransactionCommit, Transactional } from "typeorm-transactional";
 
 @Injectable()
 export class OrderPaidService {
@@ -31,25 +31,12 @@ export class OrderPaidService {
         const orderStatus = hasEnoughStock ? OrderStatusEnum.READY_TO_SHIP : OrderStatusEnum.CANCELLED;
 
         await this.orderRepository.updateOrderStatus(order.order_uuid, orderStatus);
-        await this.socketService.emitToUser(
-            order.user_uuid,
-            SocketEventNameEnum.ORDER_STATUS_CHANGED,
-            { order_uuid: order.order_uuid, order_status: orderStatus }
-        );
+
         if (hasEnoughStock) {
             for (const item of orderData.items) {
                 await this.productRepository.decreaseStock(
                     item.product_uuid,
                     item.quantity,
-                );
-
-                await this.socketService.emitToUser(
-                    order.user_uuid,
-                    SocketEventNameEnum.PRODUCT_STOCK_DECREASE_BY_QUANTITY,
-                    {
-                        product_uuid: item.product_uuid,
-                        quantity: item.quantity
-                    }
                 );
             }
         } else {
@@ -64,6 +51,29 @@ export class OrderPaidService {
             });
         }
 
+        runOnTransactionCommit(async () => {
+            await this.socketService.emitToUser(
+                order.user_uuid,
+                SocketEventNameEnum.ORDER_STATUS_CHANGED,
+                {
+                    order_uuid: order.order_uuid,
+                    order_status: orderStatus,
+                },
+            );
+
+            if (hasEnoughStock) {
+                for (const item of orderData.items) {
+                    await this.socketService.emitToUser(
+                        order.user_uuid,
+                        SocketEventNameEnum.PRODUCT_STOCK_DECREASE_BY_QUANTITY,
+                        {
+                            product_uuid: item.product_uuid,
+                            quantity: item.quantity,
+                        },
+                    );
+                }
+            }
+        });
         return;
     }
 
