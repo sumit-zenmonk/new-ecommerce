@@ -13,7 +13,7 @@ export class OutboxRepository extends Repository<OutboxEntity> {
         super(OutboxEntity, dataSource.createEntityManager());
     }
 
-    async createOutboxntry(body: Partial<OutboxEntity>) {
+    async createOutboxEntry(body: Partial<OutboxEntity>) {
         const user = this.create(body);
         return await this.save(user);
     }

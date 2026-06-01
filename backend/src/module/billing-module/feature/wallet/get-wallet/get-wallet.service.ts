@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { BillingRepository } from "src/module/billing-module/infrastructure/repository/billing.repository";
+import { WalletRepository } from "src/module/billing-module/infrastructure/repository/wallet.repository";
 import { UserEntity } from "src/module/user-module/domain/user/user.entity";
 
 @Injectable()
 export class GetWalletService {
     constructor(
-        private readonly repository: BillingRepository,
+        private readonly repository: WalletRepository,
     ) { }
 
     async getWallet(user: UserEntity) {
