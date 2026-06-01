@@ -95,6 +95,11 @@ export class PayOrderService {
                     payment_status: OrderPaymentStatusEnum.PAID
                 }
             );
+            await this.socketService.emitToUser(
+                user.uuid,
+                SocketEventNameEnum.ORDER_STATUS_CHANGED,
+                { order_uuid: order_uuid, order_status: OrderStatusEnum.BILLED }
+            );
             return;
         } catch (error) {
             await queryRunner.rollbackTransaction();
@@ -108,11 +113,6 @@ export class PayOrderService {
                     order_uuid,
                     payment_status: OrderPaymentStatusEnum.FAILED
                 }
-            );
-            await this.socketService.emitToUser(
-                user.uuid,
-                SocketEventNameEnum.ORDER_STATUS_CHANGED,
-                { order_uuid: order_uuid, order_status: OrderStatusEnum.BILLED }
             );
             throw error;
         } finally {
