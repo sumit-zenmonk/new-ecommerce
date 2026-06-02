@@ -38,7 +38,6 @@ export class WalletRepository extends Repository<WalletEntity> {
         await this.upsert(
             {
                 user_uuid,
-                balance: 0,
             },
             ["user_uuid"],
         );
