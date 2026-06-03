@@ -5,7 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Box, Button, Card, CardContent, CircularProgress, Container, Typography } from "@mui/material";
 import { RootState, } from "@/redux/store";
 import styles from "./order.module.css";
-import { getSaleOrders, getBillingOrders, getShipmentOrders } from "@/redux/feature/order/order-action";
+import { getSaleOrders, getBillingOrders, getShipmentOrders, getRazorPayLink } from "@/redux/feature/order/order-action";
 import { SaleOrder, OrderItem } from "@/redux/feature/order/order-type";
 import { enqueueSnackbar } from "notistack";
 import Image from "next/image";
@@ -60,20 +60,7 @@ export default function OrderPage() {
 
     const handlePay = async (order_uuid: string) => {
         try {
-            const razorOrder = {
-                "amount": 1000,
-                "amount_due": 1000,
-                "amount_paid": 0,
-                "attempts": 0,
-                "created_at": 1780483332,
-                "currency": "INR",
-                "entity": "order",
-                "id": "order_Sx84kSstK69jrz",
-                "notes": [],
-                "offer_id": null,
-                "receipt": null,
-                "status": "created"
-            }
+            const razorOrder = await dispatch(getRazorPayLink()).unwrap();
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
                 amount: razorOrder.amount,
