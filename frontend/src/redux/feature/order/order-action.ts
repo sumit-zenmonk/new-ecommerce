@@ -156,7 +156,7 @@ export const createOrder = createAsyncThunk<
 
 export const getRazorPayLink = createAsyncThunk<
     any,
-    void,
+    { total_price: number },
     { state: RootState }
 >(
     "razor/pay/link",
@@ -165,11 +165,12 @@ export const getRazorPayLink = createAsyncThunk<
             const token = getState().authReducer.token || "";
 
             const res = await fetch(`${API_URL}/razor/pay/link`, {
-                method: "GET",
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: token,
                 },
+                body: JSON.stringify(payload),
             });
 
             const result = await res.json();

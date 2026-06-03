@@ -60,7 +60,8 @@ export default function OrderPage() {
 
     const handlePay = async (order_uuid: string) => {
         try {
-            const razorOrder = await dispatch(getRazorPayLink()).unwrap();
+            const billingOrder = billingOrders ? billingOrders.find((item) => item.uuid === order_uuid) : null;
+            const razorOrder = await dispatch(getRazorPayLink({ total_price: Number(billingOrder?.total_price) })).unwrap();
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
                 amount: razorOrder.amount,
