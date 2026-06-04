@@ -59,12 +59,12 @@ export class ProductRepository extends Repository<ProductEntity> {
     }
 
     async getProductListingFromMaterializedView(offset?: number, limit?: number) {
-        // const shipmentSchema = process.env.DB_POSTGRES_SHIPMENT_SCHEMA || 'shipment_schema';
-        // const productView = process.env.DB_POSTGRES_PRODUCT_VIEW || "product_listing_mv";
+        const shipmentSchema = process.env.DB_POSTGRES_SHIPMENT_SCHEMA || 'shipment_schema';
+        const productView = process.env.DB_POSTGRES_PRODUCT_VIEW || "product_listing_mv";
         const currOffset = Number(offset) || Number(process.env.page_offset) || 0;
         const currLimit = Number(limit) || Number(process.env.page_limit) || 10;
 
-        // await this.dataSource.query(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${shipmentSchema}.${productView}`);
+        await this.dataSource.query(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${shipmentSchema}.${productView}`);
 
         const [data, total] = await this.dataSource.getRepository(ProductListingViewEntity).findAndCount({
             order: {
