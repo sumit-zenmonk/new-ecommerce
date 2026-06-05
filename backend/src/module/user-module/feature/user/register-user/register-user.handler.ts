@@ -22,7 +22,7 @@ export class RegisterUserService {
     @Transactional({
         connectionName: process.env.DB_POSTGRES_USER_SCHEMA || 'user_schema',
     })
-    async registerUser(req: Request, body: RegisterUserDto) {
+    async handle(req: Request, body: RegisterUserDto) {
         //check if already exists using this email
         const isUserExists = await this.userRepository.findByEmail(body.email);
         if (isUserExists.length) {

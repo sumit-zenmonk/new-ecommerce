@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { ProductRepository } from "src/module/shipment-module/infrastructure/repository/product.repository";
+import { ProductRepository } from "src/module/catalog-module/infrastructure/repository/product.repository";
 
 @Injectable()
 export class GetProductListingService {
@@ -7,7 +7,7 @@ export class GetProductListingService {
         private readonly repository: ProductRepository,
     ) { }
 
-    async getProductListing(offset?: number, limit?: number) {
+    async handle(offset?: number, limit?: number) {
         const result = await this.repository.getProductListing(offset, limit);
 
         return { ...result };

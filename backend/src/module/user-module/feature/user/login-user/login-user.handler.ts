@@ -13,7 +13,7 @@ export class LoginUserService {
         private readonly jwtHelperService: JwtHelperService,
     ) { }
 
-    async loginUser(req: Request, body: LoginUserDto) {
+    async handle(req: Request, body: LoginUserDto) {
         //check if already exists using this email
         const isUserExists = await this.userRepository.findByEmail(body.email);
         if (!isUserExists.length) {

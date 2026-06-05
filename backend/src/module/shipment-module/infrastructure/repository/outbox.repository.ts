@@ -24,7 +24,7 @@ export class OutboxRepository extends Repository<OutboxEntity> {
                 status: OutboxStatusEnum.PENDING
             },
             order: {
-                created_at: "DESC",
+                created_at: "ASC",
             },
             take: Number(process.env.page_limit) || 10
         });

@@ -7,7 +7,7 @@ export class GetProductListingService {
         private readonly repository: ProductRepository,
     ) { }
 
-    async getProductListing(offset?: number, limit?: number) {
+    async handle(offset?: number, limit?: number) {
         const result = await this.repository.getProductListing(offset, limit);
 
         return { ...result };

@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { GetMaterializedViewProductListingController } from "./get-product-listing.controller";
-import { GetMaterializedViewProductListingService } from "./get-product-listing.service";
+import { GetMaterializedViewProductListingService } from "./get-product-listing.handler";
 import { ProductRepository } from "src/module/shipment-module/infrastructure/repository/product.repository";
 
 @Module({

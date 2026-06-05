@@ -7,7 +7,7 @@ export class GetRazorPayLinkService {
     constructor(
     ) { }
 
-    async GetRazorPayLink(body: GetrazorPayLinkDto) {
+    async handle(body: GetrazorPayLinkDto) {
         const shortUuid = body.order_uuid.substring(0, 30);
 
         const razorpay = new Razorpay({
