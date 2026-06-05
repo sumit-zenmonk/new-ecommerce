@@ -11,6 +11,7 @@ import { BcryptService } from './module/common/infrastruture/services/bcrypt.ser
 import { SocketModule } from './module/common/infrastruture/socket/socket.module';
 import { RabbitMQModule } from './module/common/infrastruture/rabbit-mq/rabbit-mq.module';
 import { AuthenticateMiddleware } from './module/common/infrastruture/middleware/authenticate.middleware';
+import { createTransactionalDataSource } from './module/common/infrastruture/services/typeorm.transactional';
 
 // User Module
 import { userDataSource } from './module/user-module/infrastructure/database/data-source';
@@ -42,7 +43,6 @@ import { UserAddressModule } from './module/shipment-module/feature/user/user-ad
 import * as ShipmentProductModule from './module/shipment-module/feature/product/product.module';
 import * as ShipmentOrderModule from './module/shipment-module/feature/order/order.module';
 import * as ShipmentCronModule from './module/shipment-module/infrastructure/cron/cron.module';
-import { createTransactionalDataSource } from './module/common/infrastruture/services/typeorm.transactional';
 
 @Module({
   imports: [
