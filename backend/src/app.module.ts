@@ -65,8 +65,8 @@ import { RazorPayModule } from './module/billing-module/feature/razorpay/get.raz
       name: process.env.DB_POSTGRES_USER_SCHEMA || 'user_schema',
       useFactory: () => ({
         ...userDataSource.options,
-        retryAttempts: 10,
-        retryDelay: 5000,
+        retryAttempts: Number(process.env.DB_RETRY_ATTEMPTS) || 10,
+        retryDelay: Number(process.env.DB_RETRY_DELAY) || 5000,
       }),
       dataSourceFactory: async (options) =>
         createTransactionalDataSource(
@@ -82,8 +82,8 @@ import { RazorPayModule } from './module/billing-module/feature/razorpay/get.raz
       name: process.env.DB_POSTGRES_CATALOG_SCHEMA || 'catalog_schema',
       useFactory: () => ({
         ...catalogDataSource.options,
-        retryAttempts: 10,
-        retryDelay: 5000,
+        retryAttempts: Number(process.env.DB_RETRY_ATTEMPTS) || 10,
+        retryDelay: Number(process.env.DB_RETRY_DELAY) || 5000,
       }),
       dataSourceFactory: async (options) =>
         createTransactionalDataSource(
@@ -98,8 +98,8 @@ import { RazorPayModule } from './module/billing-module/feature/razorpay/get.raz
       name: process.env.DB_POSTGRES_SALE_SCHEMA || 'sale_schema',
       useFactory: () => ({
         ...saleDataSource.options,
-        retryAttempts: 10,
-        retryDelay: 5000,
+        retryAttempts: Number(process.env.DB_RETRY_ATTEMPTS) || 10,
+        retryDelay: Number(process.env.DB_RETRY_DELAY) || 5000,
       }),
       dataSourceFactory: async (options) =>
         createTransactionalDataSource(
@@ -116,8 +116,8 @@ import { RazorPayModule } from './module/billing-module/feature/razorpay/get.raz
       name: process.env.DB_POSTGRES_BILLING_SCHEMA || 'billing_schema',
       useFactory: () => ({
         ...billingDataSource.options,
-        retryAttempts: 10,
-        retryDelay: 5000,
+        retryAttempts: Number(process.env.DB_RETRY_ATTEMPTS) || 10,
+        retryDelay: Number(process.env.DB_RETRY_DELAY) || 5000,
       }),
       dataSourceFactory: async (options) =>
         createTransactionalDataSource(
@@ -135,8 +135,8 @@ import { RazorPayModule } from './module/billing-module/feature/razorpay/get.raz
       name: process.env.DB_POSTGRES_SHIPMENT_SCHEMA || 'shipment_schema',
       useFactory: () => ({
         ...shipmentDataSource.options,
-        retryAttempts: 10,
-        retryDelay: 5000,
+        retryAttempts: Number(process.env.DB_RETRY_ATTEMPTS) || 10,
+        retryDelay: Number(process.env.DB_RETRY_DELAY) || 5000,
       }),
       dataSourceFactory: async (options) =>
         createTransactionalDataSource(
