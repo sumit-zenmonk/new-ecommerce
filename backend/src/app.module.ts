@@ -34,6 +34,7 @@ import { billingDataSource } from './module/billing-module/infrastructure/databa
 import { WalletModule } from './module/billing-module/feature/wallet/wallet.module';
 import * as BillingOrderModule from './module/billing-module/feature/order/order.module';
 import * as BillingCronModule from './module/billing-module/infrastructure/cron/cron.module';
+import { RazorPayModule } from './module/billing-module/feature/razorpay/get.razor.pay.link.module';
 
 // Shipment Module
 import { shipmentDataSource } from './module/shipment-module/infrastructure/database/data-source';
@@ -42,7 +43,6 @@ import * as ShipmentProductModule from './module/shipment-module/feature/product
 import * as ShipmentOrderModule from './module/shipment-module/feature/order/order.module';
 import * as ShipmentCronModule from './module/shipment-module/infrastructure/cron/cron.module';
 import { createTransactionalDataSource } from './module/common/infrastruture/services/typeorm.transactional';
-import { RazorPayModule } from './module/billing-module/feature/razorpay/get.razor.pay.link.module';
 
 @Module({
   imports: [
