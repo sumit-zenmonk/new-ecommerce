@@ -160,7 +160,7 @@ export default function OrderPage() {
 
                                         {
                                             (
-                                                billingOrder?.payment_status == OrderPaymentStatusEnum.PENDING ||
+                                                // billingOrder?.payment_status == OrderPaymentStatusEnum.PENDING ||
                                                 billingOrder?.payment_status == OrderPaymentStatusEnum.FAILED
                                             ) &&
                                             <Button onClick={() => handlePay(order.uuid)}>
