@@ -164,6 +164,6 @@ export class AppModule implements NestModule {
         { path: '/shipment/product/materialized-view', method: RequestMethod.GET },
         { path: '/*path/product', method: RequestMethod.GET },
       )
-      .forRoutes('*');
+      .forRoutes('/*path');
   }
 }
