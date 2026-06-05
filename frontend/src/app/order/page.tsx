@@ -120,7 +120,7 @@ export default function OrderPage() {
                             return (
                                 <Card key={order.uuid} className={styles.orderCard}>
 
-                                    <Stepper activeStep={getActiveStep((shipmentOrder?.order_status) as OrderStatusEnum)} alternativeLabel className={styles.stepper}>
+                                    <Stepper activeStep={getActiveStep((shipmentOrder?.order_status || OrderStatusEnum.PLACED) as OrderStatusEnum)} alternativeLabel className={styles.stepper}>
                                         {orderSteps.map((step) => (
                                             <Step
                                                 key={step}
