@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Req } from "@nestjs/common";
-import { RegisterUserService } from "./register-user.handler";
+import { RegisterUserService } from "./register-user.service";
 import { RegisterUserDto } from "./register-user.dto";
 import type { Request } from "express";
 
@@ -9,7 +9,7 @@ export class RegisterUserController {
 
     @Post()
     async registerUser(@Req() req: Request, @Body() body: RegisterUserDto) {
-        await this.registerUserService.handle(req, body);
+        await this.registerUserService.registerUser(req, body);
 
         return {
             message: "Registered User Suceess"

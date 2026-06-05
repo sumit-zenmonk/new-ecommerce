@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Req } from "@nestjs/common";
-import { LoginUserService } from "./login-user.handler";
+import { LoginUserService } from "./login-user.service";
 import { LoginUserDto } from "./login-user.dto";
 import type { Request } from "express";
 
@@ -9,7 +9,7 @@ export class LoginUserController {
 
     @Post()
     async loginUser(@Req() req: Request, @Body() body: LoginUserDto) {
-        const { token, isUserExists } = await this.loginUserService.handle(req, body);
+        const { token, isUserExists } = await this.loginUserService.loginUser(req, body);
         return {
             message: "Logged In User",
             access_token: token,

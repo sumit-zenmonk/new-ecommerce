@@ -7,7 +7,7 @@ export class GetMaterializedViewProductListingService {
         private readonly repository: ProductRepository,
     ) { }
 
-    async handle(offset?: number, limit?: number) {
+    async getProductListingFromMaterializedView(offset?: number, limit?: number) {
         const result = await this.repository.getProductListingFromMaterializedView(offset, limit);
 
         return { ...result };
