@@ -6,7 +6,7 @@ import { OrderRepository } from "src/module/sale-module/infrastructure/repositor
 import { OrderItemRepository } from "src/module/sale-module/infrastructure/repository/order.item.repository";
 import { OutboxRepository } from "src/module/sale-module/infrastructure/repository/outbox.repository";
 import { Transactional } from "typeorm-transactional";
-import { ApiCallService } from "src/module/common/infrastruture/services/http";
+import { ApiCallService } from "src/module/common/infrastruture/services/api.call.service";
 import type { Request } from "express";
 
 @Injectable()
@@ -24,7 +24,12 @@ export class CreateOrderService {
         const { items } = body;
         const { user, token } = req;
 
-        const order = await this.orderRepository.createOrder({ user_uuid: user.uuid, });
+        const order = await this.orderRepository.createOrder(
+            {
+                user_uuid: user.uuid,
+                total_price: body.total_price,
+            }
+        );
         const orderItems = await Promise.all(
             items.map(item =>
                 this.orderItemRepository.createOrderItem({
