@@ -145,7 +145,7 @@ export default function UserAddressModal({ isOpen, onClose, onSelectAddress }: A
                                             onClose();
                                         }}
                                     >
-                                        Use Cart Address
+                                        Place Order
                                     </Button>
                                     <Button
                                         className={styles.deleteAddress}
