@@ -70,6 +70,10 @@ export class OrderRepository extends Repository<OrderEntity> {
         await this.dataSource.query(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${shipmentSchema}.${orderView}`);
 
         const [data, total] = await this.dataSource.getRepository(OrderListingViewEntity).findAndCount({
+            relations: {
+                address: true,
+                items: true
+            },
             order: {
                 created_at: 'DESC'
             },

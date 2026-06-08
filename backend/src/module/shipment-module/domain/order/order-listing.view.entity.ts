@@ -1,5 +1,6 @@
-import { ViewColumn, ViewEntity } from "typeorm";
+import { JoinColumn, ManyToOne, ViewColumn, ViewEntity } from "typeorm";
 import { OrderItemEntity } from "../order-item/order-item.entity";
+import { UserAddressEntity } from "../user_address/user.address.entity";
 
 @ViewEntity({
     name: process.env.DB_POSTGRES_ORDER_VIEW || "order_listing_mv",
@@ -10,8 +11,6 @@ import { OrderItemEntity } from "../order-item/order-item.entity";
             sale_order.uuid,
             sale_order.user_uuid,
             sale_order.total_price,
-            sale_order.items,
-            shipment_order.address,
             shipment_order.order_status,
             billing_order.payment_status,
             sale_order.created_at,
@@ -37,11 +36,13 @@ export class OrderListingViewEntity {
     @ViewColumn()
     total_price: number;
 
-    @ViewColumn()
+    @ManyToOne(() => OrderItemEntity)
+    @JoinColumn({ name: "uuid" })
     items: OrderItemEntity;
 
-    @ViewColumn()
-    address: string;
+    @ManyToOne(() => UserAddressEntity)
+    @JoinColumn({ name: "uuid" })
+    address: UserAddressEntity;
 
     @ViewColumn()
     order_status: number;

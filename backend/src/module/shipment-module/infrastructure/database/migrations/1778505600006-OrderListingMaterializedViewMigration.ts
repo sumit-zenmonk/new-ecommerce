@@ -30,8 +30,6 @@ export class OrderListingMaterializedViewMigration1778505600006 implements Migra
                             sale_order.uuid,
                             sale_order.user_uuid,
                             sale_order.total_price,
-                            sale_order.items,
-                            shipment_order.address,
                             shipment_order.order_status,
                             billing_order.payment_status,
                             sale_order.created_at,
