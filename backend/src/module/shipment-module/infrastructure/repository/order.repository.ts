@@ -37,6 +37,11 @@ export class OrderRepository extends Repository<OrderEntity> {
     }
 
     async updateOrderStatus(uuid: string, status: OrderStatusEnum) {
+        const shipmentSchema = process.env.DB_POSTGRES_SHIPMENT_SCHEMA || 'shipment_schema';
+        const orderView = process.env.DB_POSTGRES_ORDER_VIEW || "order_listing_mv";
+
+        await this.dataSource.query(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${shipmentSchema}.${orderView}`);
+
         return await this.update(
             {
                 uuid: uuid
