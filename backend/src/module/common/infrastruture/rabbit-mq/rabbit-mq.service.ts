@@ -30,7 +30,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
             await this.setupInitialCreation();
 
             // fair dispatch means at one time a channel can hold 5 unacknowledged msg with 6th will pass on to another channel
-            await this.channel.prefetch(5);
+            await this.channel.prefetch(Number(process.env.RABBIT_MQ_PREFETCH_COUNT) || 25);
 
             // checking channel connection
             this.channel.on('error', (err: any) => {
