@@ -8,7 +8,7 @@ import { SocketService } from "src/module/common/infrastruture/socket/socket.ser
 import { runOnTransactionCommit, Transactional } from "typeorm-transactional";
 
 @Injectable()
-export class OrderCreatedService {
+export class CreateOrderService {
     constructor(
         private readonly orderRepository: OrderRepository,
         private readonly outboxRepository: OutboxRepository,
