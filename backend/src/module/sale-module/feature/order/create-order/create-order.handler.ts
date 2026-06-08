@@ -6,7 +6,7 @@ import { OrderRepository } from "src/module/sale-module/infrastructure/repositor
 import { OrderItemRepository } from "src/module/sale-module/infrastructure/repository/order.item.repository";
 import { OutboxRepository } from "src/module/sale-module/infrastructure/repository/outbox.repository";
 import { Transactional } from "typeorm-transactional";
-import { ApiCallService } from "src/module/common/infrastruture/http/http";
+import { ApiCallService } from "src/module/common/infrastruture/services/http";
 import type { Request } from "express";
 
 @Injectable()
