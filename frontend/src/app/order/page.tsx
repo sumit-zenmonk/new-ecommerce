@@ -18,6 +18,7 @@ import StepLabel from "@mui/material/StepLabel";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks.ts";
 import { payOrder } from "@/redux/feature/wallet/wallet-action";
 import Razorpay from 'razorpay';
+import { clearOrderState } from "@/redux/feature/order/order-slice";
 
 export default function OrderPage() {
     const dispatch = useAppDispatch();
@@ -29,7 +30,9 @@ export default function OrderPage() {
 
     useEffect(() => {
         // if (!saleOrders?.length) {
+        clearOrderState();
         fetchOrders();
+        setOffset(0);
         // }
     }, []);
 
@@ -120,11 +123,11 @@ export default function OrderPage() {
                                         {orderSteps.map((step) => (
                                             <Step
                                                 key={step}
-                                                completed={
-                                                    order.order_status === OrderStatusEnum.READY_TO_SHIP
-                                                        ? true
-                                                        : undefined
-                                                }
+                                                // completed={
+                                                //     order.order_status === OrderStatusEnum.READY_TO_SHIP
+                                                //         ? true
+                                                //         : undefined
+                                                // }
                                             >
                                                 <StepLabel
                                                     // error={billingOrder?.payment_status === OrderPaymentStatusEnum.REFUND && order.returned_from_status === step}

@@ -206,19 +206,19 @@ const orderSlice = createSlice({
                 state.loading = false;
                 state.status = "succeed";
 
-                const order = action.payload.data;
+                // const order = action.payload.data;
 
-                if (state.saleOrders) {
-                    state.saleOrders.unshift(order as SaleOrder);
-                } else {
-                    state.saleOrders = [order as SaleOrder];
-                }
+                // if (state.saleOrders) {
+                //     state.saleOrders.unshift(order as SaleOrder);
+                // } else {
+                //     state.saleOrders = [order as SaleOrder];
+                // }
 
-                if (state.shipmentOrdersMaterialized) {
-                    state.shipmentOrdersMaterialized.unshift(order as MaterializedOrder);
-                } else {
-                    state.shipmentOrdersMaterialized = [order as MaterializedOrder];
-                }
+                // if (state.shipmentOrdersMaterialized) {
+                //     state.shipmentOrdersMaterialized.unshift(order as MaterializedOrder);
+                // } else {
+                //     state.shipmentOrdersMaterialized = [order as MaterializedOrder];
+                // }
 
                 state.error = null;
             })

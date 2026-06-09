@@ -1,18 +1,12 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { OrderRepository } from "src/module/billing-module/infrastructure/repository/order.repository";
-import { OutboxRepository } from "src/module/billing-module/infrastructure/repository/outbox.repository";
-import { ExchangeNameEnum, RoutingKeyEnum } from "src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.enum";
 import type { OrderCreatedMQEventPayload } from "src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.type";
-import { SocketEventNameEnum } from "src/module/common/infrastruture/socket/socket.enum";
-import { SocketService } from "src/module/common/infrastruture/socket/socket.service";
 import { runOnTransactionCommit, Transactional } from "typeorm-transactional";
 
 @Injectable()
 export class CreateOrderService {
     constructor(
         private readonly orderRepository: OrderRepository,
-        private readonly outboxRepository: OutboxRepository,
-        private readonly socketService: SocketService,
     ) { }
 
     @Transactional({
@@ -30,25 +24,6 @@ export class CreateOrderService {
                 }
             );
 
-            // create outbox entry
-            await this.outboxRepository.createOutboxEntry({
-                exchange_name: ExchangeNameEnum.ORDER_EXCHANGE,
-                routing_key: RoutingKeyEnum.ORDER_PLACED,
-                message_payload: {
-                    order_uuid: order.order_uuid,
-                    user_uuid: order.user_uuid,
-                },
-            });
-
-            runOnTransactionCommit(async () => {
-                await this.socketService.emitToUser(
-                    order.user_uuid,
-                    SocketEventNameEnum.BILLING_ORDER_CREATED,
-                    {
-                        order: newOrder
-                    },
-                );
-            })
             return;
         } catch (error: any) {
             throw error;

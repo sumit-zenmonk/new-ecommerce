@@ -4,7 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/store";
 import { AddAmountPayload, AddCardPayload, PayOrderPayload, PayPayload, } from "./wallet-type";
 
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const getWallet = createAsyncThunk<
     any,
@@ -16,7 +16,7 @@ export const getWallet = createAsyncThunk<
         try {
             const token = getState().authReducer.token || "";
 
-            const res = await fetch(`${API_URL}/api/v1/wallet`, {
+            const res = await fetch(`${BACKEND_URL}/api/v1/wallet`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -47,7 +47,7 @@ export const addAmount = createAsyncThunk<
         try {
             const token = getState().authReducer.token || "";
 
-            const res = await fetch(`${API_URL}/api/v1/wallet/amount`, {
+            const res = await fetch(`${BACKEND_URL}/api/v1/wallet/amount`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -79,7 +79,7 @@ export const getwalletHistories = createAsyncThunk<
         try {
             const token = getState().authReducer.token || "";
 
-            const res = await fetch(`${API_URL}/api/v1/wallet/history`, {
+            const res = await fetch(`${BACKEND_URL}/api/v1/wallet/history`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -110,7 +110,7 @@ export const payOrder = createAsyncThunk<
         try {
             const token = getState().authReducer.token || "";
 
-            const res = await fetch(`${API_URL}/api/v1/wallet/order/pay`, {
+            const res = await fetch(`${BACKEND_URL}/api/v1/wallet/order/pay`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
