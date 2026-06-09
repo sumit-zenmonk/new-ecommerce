@@ -18,9 +18,11 @@ import * as SaleOrderRepository from 'src/module/sale-module/infrastructure/repo
 import * as SaleUserRegisteredConsumer from 'src/module/sale-module/infrastructure/rabbit-mq-consumer/user/user-registered/user-registered.consumer';
 import * as SaleUserRegisterHandler from 'src/module/sale-module/feature/user/user-register/user-register.handler';
 import * as SaleOrderBilledService from 'src/module/sale-module/feature/order/order-billed/order-billed.handler';
+import * as SaleOrderRefundService from 'src/module/sale-module/feature/order/order-refund/order-refund.handler';
 import * as SaleOrderShippingLabelCreatedService from 'src/module/sale-module/feature/order/order-shipping-label-created/order-shipping-label-created.handler';
 import * as SaleOrderBilledConsumer from 'src/module/sale-module/infrastructure/rabbit-mq-consumer/order/order-billed/order-billed.consumer';
 import * as SaleOrderShippingLabelCreatedConsumer from 'src/module/sale-module/infrastructure/rabbit-mq-consumer/order/order-shipping-label-created/order-shipping-label-created.consumer';
+import * as SaleOrderRefundConsumer from 'src/module/sale-module/infrastructure/rabbit-mq-consumer/order/order-refund/order-refund.consumer';
 
 // Billing Module
 import * as BillingUserRepo from 'src/module/billing-module/infrastructure/repository/user.repository';
@@ -74,8 +76,10 @@ import * as ShipmentOrderPlacedConsumer from 'src/module/shipment-module/infrast
         SaleOrderShippingLabelCreatedService.OrderShippingLabelCreatedService,
         SaleOrderBilledService.OrderBilledService,
         SaleUserRegisterHandler.UserRegisterService,
+        SaleOrderRefundService.OrderRefundService,
         SaleOrderBilledConsumer.OrderBilledConsumer,
         SaleOrderShippingLabelCreatedConsumer.OrderShippingLabelCreatedConsumer,
+        SaleOrderRefundConsumer.OrderRefundConsumer,
 
         // Billing Module
         BillingUserRepo.UserRepository,

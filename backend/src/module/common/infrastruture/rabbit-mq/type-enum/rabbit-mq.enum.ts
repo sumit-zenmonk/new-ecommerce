@@ -48,6 +48,7 @@ export enum QueueEnum {
 
     // ORDER_REFUND Key
     BILLING_ORDER_REFUND_QUEUE = 'billing.order.refund.queue',
+    SALE_ORDER_REFUND_QUEUE = 'sale.order.refund.queue',
 
     // ORDER_PLACED Key
     BILLING_ORDER_PLACED_QUEUE = 'billing.order.placed.queue',
