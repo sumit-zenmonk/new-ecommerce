@@ -158,7 +158,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
         );
         await this.setupRetryQueue(QueueEnum.SALE_ORDER_SHIPPING_LABEL_CREATED_QUEUE);
 
-        // sale order shipment label created queue
+        // sale order payment failed queue
         await this.setupExchangeQueueAndBind(
             QueueEnum.SALE_ORDER_PAYMENT_FAILED_QUEUE,
             ExchangeNameEnum.ORDER_EXCHANGE,
