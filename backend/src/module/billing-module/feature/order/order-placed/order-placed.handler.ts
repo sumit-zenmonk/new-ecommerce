@@ -35,11 +35,11 @@ export class OrderPlacedService {
             // check order
             const order = await this.orderRepository.findByUserUuidAndOrderUuid(user_uuid, order_uuid,);
             if (!order) {
-                throw new BadRequestException("Order not found",);
+                throw new BadRequestException("Order not found");
             }
 
             if (order.payment_status === OrderPaymentStatusEnum.PAID || order.payment_status === OrderPaymentStatusEnum.REFUND) {
-                throw new BadRequestException("Order payment can't able to process now",);
+                throw new BadRequestException("Order payment can't able to process now");
             }
 
             if (wallet.balance < order.total_price) {
@@ -48,7 +48,18 @@ export class OrderPlacedService {
                     OrderPaymentStatusEnum.FAILED,
                 );
 
-                throw new BadRequestException("Balance is low . Please do add amount");
+                // throw new BadRequestException("Balance is low . Please do add amount");
+
+                // create outbox entry
+                await this.outboxRepository.createOutboxEntry({
+                    exchange_name: ExchangeNameEnum.ORDER_EXCHANGE,
+                    routing_key: RoutingKeyEnum.ORDER_PAYMENT_FAILED,
+                    message_payload: {
+                        order_uuid,
+                        user_uuid: user_uuid,
+                    },
+                });
+                return;
             }
 
             // deduct wallet balance

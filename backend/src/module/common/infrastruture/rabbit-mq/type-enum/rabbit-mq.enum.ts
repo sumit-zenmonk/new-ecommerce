@@ -32,6 +32,8 @@ export enum RoutingKeyEnum {
     ORDER_PLACED = 'order.placed',
 
     ORDER_SHIPPING_LABEL_CREATED = 'order.shipping.label.created',
+
+    ORDER_PAYMENT_FAILED = 'order.payment.failed',
 }
 
 // queue name (module name) + routing key + endfix(queue)
@@ -55,5 +57,8 @@ export enum QueueEnum {
     SHIPMENT_ORDER_PLACED_QUEUE = 'shipment.order.placed.queue',
 
     // ORDER_SHIPPING_LABEL_CREATED Key
-    SALE_ORDER_SHIPPING_LABEL_CREATED_QUEUE = 'sale.shipping.label.created.queue',
+    SALE_ORDER_SHIPPING_LABEL_CREATED_QUEUE = 'sale.order.shipping.label.created.queue',
+
+    // ORDER_PAYMENT_FAILED
+    SALE_ORDER_PAYMENT_FAILED_QUEUE = 'sale.order.payment.failed.queue',
 }

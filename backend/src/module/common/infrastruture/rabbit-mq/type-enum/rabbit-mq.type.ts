@@ -52,6 +52,10 @@ export interface OrderShippingLabelCreatedMQEventPayload {
     order_uuid: string;
     user_uuid: string;
 }
+export interface OrderPaymentFailedMQEventPayload {
+    order_uuid: string;
+    user_uuid: string;
+}
 
 export interface OrderRefundMQEventPayload {
     order_uuid: string;

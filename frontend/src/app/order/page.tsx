@@ -52,6 +52,7 @@ export default function OrderPage() {
         OrderStatusEnum.PENDING,
         OrderStatusEnum.PLACED,
         OrderStatusEnum.BILLED,
+        OrderStatusEnum.PAYMENT_FAILED,
         OrderStatusEnum.READY_TO_SHIP,
         OrderStatusEnum.CANCELLED,
     ];
@@ -123,11 +124,11 @@ export default function OrderPage() {
                                         {orderSteps.map((step) => (
                                             <Step
                                                 key={step}
-                                                // completed={
-                                                //     order.order_status === OrderStatusEnum.READY_TO_SHIP
-                                                //         ? true
-                                                //         : undefined
-                                                // }
+                                            // completed={
+                                            //     order.order_status === OrderStatusEnum.READY_TO_SHIP
+                                            //         ? true
+                                            //         : undefined
+                                            // }
                                             >
                                                 <StepLabel
                                                     // error={billingOrder?.payment_status === OrderPaymentStatusEnum.REFUND && order.returned_from_status === step}

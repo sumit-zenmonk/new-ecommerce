@@ -5,7 +5,7 @@ import { runOnTransactionCommit, Transactional } from "typeorm-transactional";
 import { OrderRepository } from "src/module/sale-module/infrastructure/repository/order.repository";
 
 @Injectable()
-export class OrderBilledService {
+export class OrderPaymentFailedService {
     constructor(
         private readonly orderRepository: OrderRepository,
     ) { }
@@ -19,7 +19,7 @@ export class OrderBilledService {
             throw new BadRequestException("Order not found");
         }
 
-        await this.orderRepository.updateOrderStatus(order.order_uuid, OrderStatusEnum.BILLED);
+        await this.orderRepository.updateOrderStatus(order.order_uuid, OrderStatusEnum.PAYMENT_FAILED);
 
         return;
     }
