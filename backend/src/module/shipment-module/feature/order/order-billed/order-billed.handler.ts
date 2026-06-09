@@ -46,6 +46,7 @@ export class OrderBilledService {
                     reason: "Stock not available",
                 },
             });
+            return;
         }
 
         await this.outboxRepository.createOutboxEntry({
