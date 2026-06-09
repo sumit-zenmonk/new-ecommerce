@@ -5,8 +5,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Box, Button, Card, CardContent, CircularProgress, Container, Typography } from "@mui/material";
 import { RootState, } from "@/redux/store";
 import styles from "./order.module.css";
-import { getSaleOrders, getBillingOrders, getShipmentOrders, getRazorPayLink } from "@/redux/feature/order/order-action";
-import { SaleOrder, OrderItem } from "@/redux/feature/order/order-type";
+import { getShipmentOrdersMaterialized, getRazorPayLink } from "@/redux/feature/order/order-action";
+import { SaleOrder, OrderItem, MaterializedOrder } from "@/redux/feature/order/order-type";
 import { enqueueSnackbar } from "notistack";
 import Image from "next/image";
 import Slider from "react-slick";
@@ -21,10 +21,10 @@ import Razorpay from 'razorpay';
 
 export default function OrderPage() {
     const dispatch = useAppDispatch();
-    const { saleOrders, billingOrders, shipmentOrders, loading } = useAppSelector((state: RootState) => state.orderReducer);
+    const { shipmentOrdersMaterialized, loading } = useAppSelector((state: RootState) => state.orderReducer);
     const { products, catalogProducts, saleProducts } = useAppSelector((state: RootState) => state.productReducer);
     const [limit] = useState(Number(process.env.NEXT_PUBLIC_PAGE_LIMIT) || 10);
-    const [offset, setOffset] = useState(Number(process.env.NEXT_PUBLIC_PAGE_OFFSET) || 0);
+    const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
@@ -35,9 +35,7 @@ export default function OrderPage() {
 
     const fetchOrders = async () => {
         try {
-            const result = await dispatch(getSaleOrders({ limit, offset })).unwrap();
-            await dispatch(getBillingOrders({ limit, offset })).unwrap();
-            await dispatch(getShipmentOrders({ limit, offset })).unwrap();
+            const result = await dispatch(getShipmentOrdersMaterialized({ limit, offset: offset })).unwrap();
             const fetchedOrders = Array.isArray(result.data) ? result.data : [];
             setOffset(prevOffset => prevOffset + limit);
             if (fetchedOrders.length < limit) setHasMore(false);
@@ -60,8 +58,8 @@ export default function OrderPage() {
 
     const handlePay = async (order_uuid: string) => {
         try {
-            const billingOrder = billingOrders ? billingOrders.find((item) => item.uuid === order_uuid) : null;
-            const razorOrder = await dispatch(getRazorPayLink({ total_price: Number(billingOrder?.total_price), order_uuid: order_uuid })).unwrap();
+            const order = shipmentOrdersMaterialized?.find((item) => item.uuid === order_uuid);
+            const razorOrder = await dispatch(getRazorPayLink({ total_price: Number(order?.total_price), order_uuid: order_uuid })).unwrap();
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
                 amount: razorOrder.data.amount,
@@ -104,28 +102,25 @@ export default function OrderPage() {
 
             <Box id="scrollableDiv" className={styles.scrollWrapper}>
                 <InfiniteScroll
-                    dataLength={saleOrders ? saleOrders.length : 0}
+                    dataLength={shipmentOrdersMaterialized ? shipmentOrdersMaterialized.length : 0}
                     next={fetchOrders}
                     hasMore={hasMore}
                     loader={<Box className={styles.loader}><CircularProgress /></Box>}
                     endMessage={<Typography className={styles.endMessage}>Yay! You have seen it all</Typography>}
                     scrollableTarget="scrollableDiv"
                 >
-                    {saleOrders && saleOrders.length > 0 ? (
-                        saleOrders.map((order: SaleOrder, idx: number) => {
-                            const descendingIndex = saleOrders.length - 1 - idx;
-                            const billingOrder = billingOrders ? billingOrders.find((item) => item.uuid === order.uuid) : null;
-                            const shipmentOrder = shipmentOrders ? shipmentOrders.find((item) => item.uuid === order.uuid) : null;
-
+                    {shipmentOrdersMaterialized && shipmentOrdersMaterialized.length > 0 ? (
+                        shipmentOrdersMaterialized.map((order: MaterializedOrder, idx: number) => {
+                            const descendingIndex = shipmentOrdersMaterialized.length - 1 - idx;
                             return (
                                 <Card key={order.uuid} className={styles.orderCard}>
 
-                                    <Stepper activeStep={getActiveStep((shipmentOrder?.order_status || OrderStatusEnum.PLACED) as OrderStatusEnum)} alternativeLabel className={styles.stepper}>
+                                    <Stepper activeStep={getActiveStep((order.order_status || OrderStatusEnum.PLACED) as OrderStatusEnum)} alternativeLabel className={styles.stepper}>
                                         {orderSteps.map((step) => (
                                             <Step
                                                 key={step}
                                                 completed={
-                                                    shipmentOrder?.order_status === OrderStatusEnum.READY_TO_SHIP
+                                                    order.order_status === OrderStatusEnum.READY_TO_SHIP
                                                         ? true
                                                         : undefined
                                                 }
@@ -155,7 +150,7 @@ export default function OrderPage() {
                                         </Typography>
 
                                         <Typography variant="h6">
-                                            Total Price: {billingOrder?.total_price}
+                                            Total Price: {order.total_price}
                                         </Typography>
 
                                         {/* {
@@ -170,7 +165,7 @@ export default function OrderPage() {
 
                                         <Box className={styles.slidercomp}>
                                             <Slider {...sliderSettings}>
-                                                {order.items.map((item: OrderItem) => {
+                                                {order.items && order.items.map((item: OrderItem) => {
                                                     const product = products.find((p) => p.uuid === item.product_uuid) || catalogProducts.find((p) => p.uuid === item.product_uuid);
                                                     const saleProduct = saleProducts.find((p) => p.uuid === item.product_uuid);
 
@@ -210,14 +205,14 @@ export default function OrderPage() {
                                                 variant="body2"
                                                 sx={{ mt: 1, textAlign: "center" }}
                                             >
-                                                Payment Status: {billingOrder?.payment_status.toUpperCase() || OrderPaymentStatusEnum.PENDING.toUpperCase()}
+                                                Payment Status: {order.payment_status?.toUpperCase() || OrderPaymentStatusEnum.PENDING.toUpperCase()}
                                             </Typography>
 
                                             <Typography
                                                 variant="body2"
                                                 sx={{ mt: 1, textAlign: "center" }}
                                             >
-                                                Order Status: {shipmentOrder?.order_status.toUpperCase() || OrderStatusEnum.PLACED.toUpperCase()}
+                                                Order Status: {order.order_status?.toUpperCase() || OrderStatusEnum.PLACED.toUpperCase()}
                                             </Typography>
                                         </Box>
                                     </CardContent>
