@@ -46,10 +46,11 @@ export default function OrderPage() {
     };
 
     const orderSteps = [
+        OrderStatusEnum.PENDING,
         OrderStatusEnum.PLACED,
         OrderStatusEnum.BILLED,
         OrderStatusEnum.READY_TO_SHIP,
-        // OrderStatusEnum.CANCELLED,
+        OrderStatusEnum.CANCELLED,
     ];
 
     const getActiveStep = (status: OrderStatusEnum) => {
@@ -115,7 +116,7 @@ export default function OrderPage() {
                             return (
                                 <Card key={order.uuid} className={styles.orderCard}>
 
-                                    <Stepper activeStep={getActiveStep((order.order_status || OrderStatusEnum.PLACED) as OrderStatusEnum)} alternativeLabel className={styles.stepper}>
+                                    <Stepper activeStep={getActiveStep((order.order_status || OrderStatusEnum.PENDING) as OrderStatusEnum)} alternativeLabel className={styles.stepper}>
                                         {orderSteps.map((step) => (
                                             <Step
                                                 key={step}

@@ -39,9 +39,11 @@ import * as ShipmentOrderItemRepo from 'src/module/shipment-module/infrastructur
 import * as ShipmentProductRepo from 'src/module/shipment-module/infrastructure/repository/product.repository';
 import * as ShipmentOutboxRepo from 'src/module/shipment-module/infrastructure/repository/outbox.repository';
 import * as ShipmentUserRegisterService from 'src/module/shipment-module/feature/user/user-register/user-register.handler';
+import * as ShipmentOrderPlacedService from 'src/module/shipment-module/feature/order/order-placed/order-placed.handler';
 import * as ShipmentOrderPaidService from 'src/module/shipment-module/feature/order/order-paid/order-paid.handler';
 import * as ShipmentUserRegisteredConsumer from 'src/module/shipment-module/infrastructure/rabbit-mq-consumer/user/user-registered/user-registered.consumer';
 import * as ShipmentOrderPaidConsumer from 'src/module/shipment-module/infrastructure/rabbit-mq-consumer/order/order-paid/order-paid.consumer';
+import * as ShipmentOrderPlacedConsumer from 'src/module/shipment-module/infrastructure/rabbit-mq-consumer/order/order-placed/order-placed.consumer';
 
 @Global()
 @Module({
@@ -88,8 +90,10 @@ import * as ShipmentOrderPaidConsumer from 'src/module/shipment-module/infrastru
         ShipmentInboxRepo.InboxRepository,
         ShipmentUserRegisterService.UserRegisterService,
         ShipmentOrderPaidService.OrderPaidService,
+        ShipmentOrderPlacedService.OrderPlacedService,
         ShipmentUserRegisteredConsumer.UserRegisteredConsumer,
         ShipmentOrderPaidConsumer.OrderPaidConsumer,
+        ShipmentOrderPlacedConsumer.OrderPlacedConsumer,
     ],
     exports: [RabbitMQService],
 })

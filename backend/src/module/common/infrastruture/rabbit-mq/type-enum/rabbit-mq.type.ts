@@ -43,7 +43,7 @@ export interface OrderPaidMQEventPayload {
     user_uuid: string;
 }
 
-export interface BillingOrderPlacedMQEventPayload {
+export interface OrderPlacedMQEventPayload {
     order_uuid: string;
     user_uuid: string;
 }

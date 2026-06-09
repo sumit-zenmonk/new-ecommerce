@@ -1,7 +1,7 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { RabbitMQService } from 'src/module/common/infrastruture/rabbit-mq/rabbit-mq.service';
 import { ExchangeNameEnum, ExchangeTypeEnum, QueueEnum, RoutingKeyEnum } from 'src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.enum';
-import { RabbitMQConsumerMessage, BillingOrderPlacedMQEventPayload } from 'src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.type';
+import { RabbitMQConsumerMessage, OrderPlacedMQEventPayload } from 'src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.type';
 import { InboxRepository } from '../../../repository/inbox.repository';
 import { PayOrderService } from 'src/module/billing-module/feature/wallet/pay-order/pay-order.handler';
 
@@ -16,7 +16,7 @@ export class OrderPlacedConsumer implements OnModuleInit {
     ) { }
 
     async onModuleInit() {
-        await this.rabbitMQService.consumeMessages<RabbitMQConsumerMessage<BillingOrderPlacedMQEventPayload>>(
+        await this.rabbitMQService.consumeMessages<RabbitMQConsumerMessage<OrderPlacedMQEventPayload>>(
             QueueEnum.BILLING_ORDER_PLACED_QUEUE,
             async (data) => {
                 const { outbox_uuid, payload } = data;
