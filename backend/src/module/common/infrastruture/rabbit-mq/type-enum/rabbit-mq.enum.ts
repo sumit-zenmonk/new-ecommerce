@@ -18,22 +18,28 @@ export enum RetryMechanismHeaderEnum {
 export enum ExchangeNameEnum {
     USER_EXCHANGE = 'user.exchange',
 
-    ORDER_EXCHANGE = 'order.exchange',
+    SALE_EXCHANGE = 'sale.exchange',
+
+    BILLING_EXCHANGE = 'billing.exchange',
+
+    SHIPPING_EXCHANGE = 'shipping.exchange',
 }
 
-// exchange name + routing key
+// routing key
 export enum RoutingKeyEnum {
+    // USER_EXCHANGE
     USER_REGISTERED = 'user.registered',
 
-    ORDER_BILLED = 'order.billed',
-
-    ORDER_REFUND = 'order.refund',
-
+    // SALE_EXCHANGE
     ORDER_PLACED = 'order.placed',
 
-    ORDER_SHIPPING_LABEL_CREATED = 'order.shipping.label.created',
-
+    // BILLING_EXCHANGE
+    ORDER_BILLED = 'order.billed',
+    ORDER_REFUND = 'order.refund',
     ORDER_PAYMENT_FAILED = 'order.payment.failed',
+
+    // SHIPPING_EXCHANGE
+    ORDER_SHIPPING_LABEL_CREATED = 'order.shipping.label.created',
 }
 
 // queue name (module name) + routing key + endfix(queue)

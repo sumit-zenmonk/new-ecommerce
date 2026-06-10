@@ -98,7 +98,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
         // shipment order billed queue
         await this.setupExchangeQueueAndBind(
             QueueEnum.SHIPMENT_ORDER_BILLED_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
+            ExchangeNameEnum.BILLING_EXCHANGE,
             RoutingKeyEnum.ORDER_BILLED,
             ExchangeTypeEnum.DIRECT,
         );
@@ -107,7 +107,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
         // sale order billed queue
         await this.setupExchangeQueueAndBind(
             QueueEnum.SALE_ORDER_BILLED_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
+            ExchangeNameEnum.BILLING_EXCHANGE,
             RoutingKeyEnum.ORDER_BILLED,
             ExchangeTypeEnum.DIRECT,
         );
@@ -116,7 +116,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
         // billing order refund queue
         await this.setupExchangeQueueAndBind(
             QueueEnum.BILLING_ORDER_REFUND_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
+            ExchangeNameEnum.BILLING_EXCHANGE,
             RoutingKeyEnum.ORDER_REFUND,
             ExchangeTypeEnum.DIRECT,
         );
@@ -125,7 +125,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
         // billing order refund queue
         await this.setupExchangeQueueAndBind(
             QueueEnum.SALE_ORDER_REFUND_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
+            ExchangeNameEnum.BILLING_EXCHANGE,
             RoutingKeyEnum.ORDER_REFUND,
             ExchangeTypeEnum.DIRECT,
         );
@@ -134,7 +134,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
         // billing order placed now pay queue
         await this.setupExchangeQueueAndBind(
             QueueEnum.BILLING_ORDER_PLACED_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
+            ExchangeNameEnum.SALE_EXCHANGE,
             RoutingKeyEnum.ORDER_PLACED,
             ExchangeTypeEnum.DIRECT,
         );
@@ -143,7 +143,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
         // shipment order placed queue
         await this.setupExchangeQueueAndBind(
             QueueEnum.SHIPMENT_ORDER_PLACED_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
+            ExchangeNameEnum.SALE_EXCHANGE,
             RoutingKeyEnum.ORDER_PLACED,
             ExchangeTypeEnum.DIRECT,
         );
@@ -152,7 +152,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
         // sale order shipment label created queue
         await this.setupExchangeQueueAndBind(
             QueueEnum.SALE_ORDER_SHIPPING_LABEL_CREATED_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
+            ExchangeNameEnum.SHIPPING_EXCHANGE,
             RoutingKeyEnum.ORDER_SHIPPING_LABEL_CREATED,
             ExchangeTypeEnum.DIRECT,
         );
@@ -161,7 +161,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
         // sale order payment failed queue
         await this.setupExchangeQueueAndBind(
             QueueEnum.SALE_ORDER_PAYMENT_FAILED_QUEUE,
-            ExchangeNameEnum.ORDER_EXCHANGE,
+            ExchangeNameEnum.BILLING_EXCHANGE,
             RoutingKeyEnum.ORDER_PAYMENT_FAILED,
             ExchangeTypeEnum.DIRECT,
         );

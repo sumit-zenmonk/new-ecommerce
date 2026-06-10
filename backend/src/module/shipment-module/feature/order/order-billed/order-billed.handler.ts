@@ -38,7 +38,7 @@ export class OrderBilledService {
             }
         } else {
             await this.outboxRepository.createOutboxEntry({
-                exchange_name: ExchangeNameEnum.ORDER_EXCHANGE,
+                exchange_name: ExchangeNameEnum.BILLING_EXCHANGE,
                 routing_key: RoutingKeyEnum.ORDER_REFUND,
                 message_payload: {
                     order_uuid: order.order_uuid,
@@ -50,7 +50,7 @@ export class OrderBilledService {
         }
 
         await this.outboxRepository.createOutboxEntry({
-            exchange_name: ExchangeNameEnum.ORDER_EXCHANGE,
+            exchange_name: ExchangeNameEnum.SHIPPING_EXCHANGE,
             routing_key: RoutingKeyEnum.ORDER_SHIPPING_LABEL_CREATED,
             message_payload: {
                 order_uuid: order.order_uuid,

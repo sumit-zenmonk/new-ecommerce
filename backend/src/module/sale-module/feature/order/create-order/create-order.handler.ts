@@ -44,7 +44,7 @@ export class CreateOrderService {
 
         // create outbox entry
         await this.outboxRepository.createOutboxEntry({
-            exchange_name: ExchangeNameEnum.ORDER_EXCHANGE,
+            exchange_name: ExchangeNameEnum.SALE_EXCHANGE,
             routing_key: RoutingKeyEnum.ORDER_PLACED,
             message_payload: {
                 order_uuid: order.uuid,
