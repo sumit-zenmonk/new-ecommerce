@@ -15,6 +15,9 @@ export class OutboxEntity {
     })
     id: number;
 
+    @Column({ type: "varchar", nullable: false, })
+    event_name: string;
+
     @Column({
         type: "enum",
         enum: ExchangeNameEnum,
@@ -25,7 +28,7 @@ export class OutboxEntity {
     @Column({
         type: "enum",
         enum: RoutingKeyEnum,
-        nullable: false,
+        nullable: true,
     })
     routing_key: RoutingKeyEnum;
 

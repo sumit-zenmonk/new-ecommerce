@@ -50,6 +50,7 @@ export class OrderRefundService {
         await this.outboxRepository.createOutboxEntry({
             exchange_name: ExchangeNameEnum.BILLING_EXCHANGE,
             routing_key: RoutingKeyEnum.ORDER_REFUND,
+            event_name: RoutingKeyEnum.ORDER_REFUND,
             message_payload: {
                 order_uuid: order.order_uuid,
                 customer_uuid: order.customer_uuid,

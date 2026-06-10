@@ -14,8 +14,9 @@ export class outboxMigration1778505599999 implements MigrationInterface {
                 columns: [
                     { name: "uuid", type: "uuid", isPrimary: true, generationStrategy: "uuid", default: "uuid_generate_v4()", },
                     { name: "id", type: "bigint", isGenerated: true, generationStrategy: "increment", isUnique: true, isNullable: false, },
+                    { name: "event_name", type: "varchar", isNullable: false, },
                     { name: "exchange_name", type: `"billing_schema"."outbox_exchange_name_enum"`, isNullable: false, },
-                    { name: "routing_key", type: `"billing_schema"."outbox_routing_key_enum"`, isNullable: false, },
+                    { name: "routing_key", type: `"billing_schema"."outbox_routing_key_enum"`, isNullable: true, },
                     { name: "message_payload", type: "jsonb", isNullable: false, },
                     { name: "header_payload", type: "jsonb", isNullable: true, },
                     { name: "status", type: `"billing_schema"."outbox_status_enum"`, default: `'pending'`, isNullable: false, },

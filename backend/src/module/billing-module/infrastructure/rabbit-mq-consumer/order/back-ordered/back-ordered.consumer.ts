@@ -19,7 +19,7 @@ export class BackOrderedConsumer implements OnModuleInit {
         await this.rabbitMQService.consumeMessages<RabbitMQConsumerMessage<BackOrderedMQEventPayload>>(
             QueueEnum.BILLING_BACK_ORDERED_QUEUE,
             async (data) => {
-                const { outbox_uuid, payload } = data;
+                const { outbox_uuid, payload, event_name } = data;
 
                 this.logger.log(`Processing back ordered: ${payload.order_uuid} \n ${JSON.stringify(payload)}`);
 
@@ -31,7 +31,7 @@ export class BackOrderedConsumer implements OnModuleInit {
 
                 await this.orderRefundService.handle(payload);
 
-                await this.inboxRepository.createEntry({ outbox_uuid });
+                await this.inboxRepository.createEntry({ outbox_uuid, event_name });
             },
         );
     }

@@ -19,7 +19,7 @@ export class OrderBilledConsumer implements OnModuleInit {
         await this.rabbitMQService.consumeMessages<RabbitMQConsumerMessage<OrderBilledMQEventPayload>>(
             QueueEnum.SALE_ORDER_BILLED_QUEUE,
             async (data) => {
-                const { outbox_uuid, payload } = data;
+                const { outbox_uuid, payload, event_name } = data;
 
                 this.logger.log(`Processing order Billed: ${payload.order_uuid} \n ${JSON.stringify(payload)}`);
 
@@ -31,7 +31,7 @@ export class OrderBilledConsumer implements OnModuleInit {
 
                 await this.orderBilledService.handle(payload);
 
-                await this.inboxRepository.createEntry({ outbox_uuid });
+                await this.inboxRepository.createEntry({ outbox_uuid, event_name });
             },
         );
     }

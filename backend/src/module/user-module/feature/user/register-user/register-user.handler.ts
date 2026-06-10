@@ -49,6 +49,7 @@ export class RegisterUserService {
         await this.outboxRepository.createOutboxEntry({
             exchange_name: ExchangeNameEnum.USER_EXCHANGE,
             routing_key: RoutingKeyEnum.USER_REGISTERED,
+            event_name: RoutingKeyEnum.USER_REGISTERED,
             message_payload: RegisteredUser,
         });
 

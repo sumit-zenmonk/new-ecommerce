@@ -19,7 +19,7 @@ export class OrderRefundConsumer implements OnModuleInit {
         await this.rabbitMQService.consumeMessages<RabbitMQConsumerMessage<OrderRefundMQEventPayload>>(
             QueueEnum.SALE_ORDER_REFUND_QUEUE,
             async (data) => {
-                const { outbox_uuid, payload } = data;
+                const { outbox_uuid, payload, event_name } = data;
 
                 this.logger.log(`Processing order refund: ${payload.order_uuid} \n ${JSON.stringify(payload)}`);
 
@@ -31,7 +31,7 @@ export class OrderRefundConsumer implements OnModuleInit {
 
                 await this.orderRefundService.handle(payload);
 
-                await this.inboxRepository.createEntry({ outbox_uuid });
+                await this.inboxRepository.createEntry({ outbox_uuid, event_name });
             },
         );
     }

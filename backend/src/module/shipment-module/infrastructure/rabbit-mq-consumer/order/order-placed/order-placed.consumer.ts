@@ -19,7 +19,7 @@ export class OrderPlacedConsumer implements OnModuleInit {
         await this.rabbitMQService.consumeMessages<RabbitMQConsumerMessage<OrderPlacedMQEventPayload>>(
             QueueEnum.SHIPMENT_ORDER_PLACED_QUEUE,
             async (data) => {
-                const { outbox_uuid, payload } = data;
+                const { outbox_uuid, payload, event_name } = data;
 
                 this.logger.log(`Processing order placed: ${payload.order_uuid} \n ${JSON.stringify(payload)}`);
 
@@ -31,7 +31,7 @@ export class OrderPlacedConsumer implements OnModuleInit {
 
                 await this.orderPlacedService.handle(payload);
 
-                await this.inboxRepository.createEntry({ outbox_uuid });
+                await this.inboxRepository.createEntry({ outbox_uuid, event_name });
             },
         );
     }

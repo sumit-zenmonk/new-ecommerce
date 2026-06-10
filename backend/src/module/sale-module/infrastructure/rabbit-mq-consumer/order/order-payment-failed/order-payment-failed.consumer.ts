@@ -19,7 +19,7 @@ export class OrderPaymentFailedConsumer implements OnModuleInit {
         await this.rabbitMQService.consumeMessages<RabbitMQConsumerMessage<OrderPaymentFailedMQEventPayload>>(
             QueueEnum.SALE_PAYMENT_FAILED_QUEUE,
             async (data) => {
-                const { outbox_uuid, payload } = data;
+                const { outbox_uuid, payload, event_name } = data;
 
                 this.logger.log(`Processing order Payment Failed: ${payload.order_uuid} \n ${JSON.stringify(payload)}`);
 
@@ -31,7 +31,7 @@ export class OrderPaymentFailedConsumer implements OnModuleInit {
 
                 await this.orderPaymentFailedService.handle(payload);
 
-                await this.inboxRepository.createEntry({ outbox_uuid });
+                await this.inboxRepository.createEntry({ outbox_uuid, event_name });
             },
         );
     }

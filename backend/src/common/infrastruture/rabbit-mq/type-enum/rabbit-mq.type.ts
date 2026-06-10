@@ -11,6 +11,7 @@ export type ExchangeType = | 'direct' | 'fanout' | 'topic' | 'headers';
 export interface RabbitMQConsumerMessage<TPayload = unknown> {
     outbox_uuid: string;
     payload: TPayload;
+    event_name: string;
 }
 
 export interface UserRegisteredMQEventPayload {

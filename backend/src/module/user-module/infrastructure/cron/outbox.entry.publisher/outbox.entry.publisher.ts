@@ -28,6 +28,7 @@ export class OutboxEntryPublisherCronService {
                         entry.routing_key,
                         {
                             outbox_uuid: entry.uuid,
+                            event_name: entry.event_name,
                             payload: entry.message_payload,
                         },
                     );
