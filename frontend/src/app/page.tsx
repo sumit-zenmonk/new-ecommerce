@@ -22,15 +22,13 @@ export default function Home() {
   const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    if (!products?.length) {
-      fetchInitialProducts();
-    }
+    // if (!products?.length) {
+    fetchInitialProducts();
+    // }
   }, []);
 
   const fetchInitialProducts = async () => {
     try {
-      setOffset(0);
-
       await dispatch(getProducts({ limit, offset: 0 })).unwrap();
       // await dispatch(getCatalogProducts({ limit, offset: 0 })).unwrap();
       // await dispatch(getSaleProducts({ limit, offset: 0 })).unwrap();
