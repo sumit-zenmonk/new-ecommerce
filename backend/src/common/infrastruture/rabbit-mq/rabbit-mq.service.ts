@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit, OnModuleDestroy, Logger } from "@nestjs/common";
 import amqp, { Channel, ChannelModel } from "amqplib";
-import { ExchangeType, PublishHeadersInterface } from "./type-enum/rabbit-mq.type";
+import { ExchangeType, PublishHeadersInterface, RabbitMQConsumerMessage } from "./type-enum/rabbit-mq.type";
 import { ExchangeNameEnum, ExchangeTypeEnum, QueueEnum, RetryMechanismHeaderEnum, RoutingKeyEnum } from "./type-enum/rabbit-mq.enum";
 
 @Injectable()
@@ -298,7 +298,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
     async publishToExchange(
         exchange: string,
         routingKey: string,
-        message: unknown,
+        message: RabbitMQConsumerMessage,
         // type: ExchangeType = ExchangeTypeEnum.DIRECT,
         headers?: PublishHeadersInterface
     ) {
