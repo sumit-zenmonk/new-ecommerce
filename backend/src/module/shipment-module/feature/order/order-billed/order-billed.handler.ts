@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { OrderRepository } from "src/module/shipment-module/infrastructure/repository/order.repository";
-import type { OrderBilledMQEventPayload } from "src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.type";
+import type { OrderBilledMQEventPayload } from "src/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.type";
 import { OrderStatusEnum } from "src/module/sale-module/domain/order/order.enum";
 import { ProductRepository } from "src/module/shipment-module/infrastructure/repository/product.repository";
 import { OutboxRepository } from "src/module/shipment-module/infrastructure/repository/outbox.repository";
-import { ExchangeNameEnum, RoutingKeyEnum } from "src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.enum";
+import { ExchangeNameEnum, RoutingKeyEnum } from "src/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.enum";
 import { runOnTransactionCommit, Transactional } from "typeorm-transactional";
 
 @Injectable()

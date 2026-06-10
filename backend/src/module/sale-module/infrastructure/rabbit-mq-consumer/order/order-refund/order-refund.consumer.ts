@@ -1,7 +1,7 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { RabbitMQService } from 'src/module/common/infrastruture/rabbit-mq/rabbit-mq.service';
-import { QueueEnum } from 'src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.enum';
-import { RabbitMQConsumerMessage, OrderRefundMQEventPayload } from 'src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.type';
+import { RabbitMQService } from 'src/common/infrastruture/rabbit-mq/rabbit-mq.service';
+import { QueueEnum } from 'src/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.enum';
+import { RabbitMQConsumerMessage, OrderRefundMQEventPayload } from 'src/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.type';
 import { InboxRepository } from '../../../repository/inbox.repository';
 import { OrderRefundService } from 'src/module/sale-module/feature/order/order-refund/order-refund.handler';
 

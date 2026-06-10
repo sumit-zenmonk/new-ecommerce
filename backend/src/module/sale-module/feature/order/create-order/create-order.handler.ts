@@ -5,7 +5,7 @@ import { OrderItemRepository } from "src/module/sale-module/infrastructure/repos
 import { Transactional } from "typeorm-transactional";
 import type { Request } from "express";
 import { OutboxRepository } from "src/module/sale-module/infrastructure/repository/outbox.repository";
-import { ExchangeNameEnum, RoutingKeyEnum } from "src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.enum";
+import { ExchangeNameEnum, RoutingKeyEnum } from "src/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.enum";
 import { OrderStatusEnum } from "src/module/sale-module/domain/order/order.enum";
 
 @Injectable()

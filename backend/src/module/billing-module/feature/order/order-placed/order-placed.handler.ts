@@ -8,7 +8,7 @@ import { OrderRepository } from "src/module/billing-module/infrastructure/reposi
 import { OutboxRepository } from "src/module/billing-module/infrastructure/repository/outbox.repository";
 import { OrderPaymentStatusEnum } from "src/module/billing-module/domain/order/order.enum";
 import { WalletHistoryTypeEnum } from "src/module/billing-module/domain/wallet-history/wallet.enum";
-import { ExchangeNameEnum, RoutingKeyEnum, } from "src/module/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.enum";
+import { ExchangeNameEnum, RoutingKeyEnum, } from "src/common/infrastruture/rabbit-mq/type-enum/rabbit-mq.enum";
 
 @Injectable()
 export class OrderPlacedService {
