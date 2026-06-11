@@ -1,16 +1,16 @@
 import { BadRequestException, Injectable, } from "@nestjs/common";
-import type { UserRegisteredMQEventPayload } from "src/module/catalog-module/infrastructure/rabbit-mq/rabbit-mq.type";
-import { UserRepository } from "src/module/catalog-module/infrastructure/repository/user.repository";
+import type { UserRegisteredMQEventPayload } from "src/module/sale-module/infrastructure/rabbit-mq/rabbit-mq.type";
+import { UserRepository } from "src/module/sale-module/infrastructure/repository/user.repository";
 import { Transactional } from "typeorm-transactional";
 
 @Injectable()
-export class UserRegisterService {
+export class UserRegisteredService {
     constructor(
         private readonly repository: UserRepository,
     ) { }
 
     @Transactional({
-        connectionName: process.env.DB_POSTGRES_CATALOG_SCHEMA || 'catalog_schema',
+        connectionName: process.env.DB_POSTGRES_SALE_SCHEMA || 'sale_schema',
     })
     async handle(payload: UserRegisteredMQEventPayload) {
         const isUserExists = await this.repository.findByEmail(payload.email);

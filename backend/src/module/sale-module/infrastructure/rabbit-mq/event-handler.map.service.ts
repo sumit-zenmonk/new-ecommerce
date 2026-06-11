@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRegisteredMQEventPayload, OrderBilledMQEventPayload, OrderRefundMQEventPayload, OrderPaymentFailedMQEventPayload, OrderShippingLabelCreatedMQEventPayload, SaleEventHandlerMap } from './rabbit-mq.type';
-import { UserRegisterService as SaleUserRegisterService } from 'src/module/sale-module/feature/user/user-register/user-register.handler';
+import { UserRegisteredService } from 'src/module/sale-module/feature/user/user-registered/user-registered.handler';
 import { OrderBilledService } from 'src/module/sale-module/feature/order/order-billed/order-billed.handler';
 import { OrderRefundService } from 'src/module/sale-module/feature/order/order-refund/order-refund.handler';
 import { OrderPaymentFailedService } from 'src/module/sale-module/feature/order/order-payment-failed/order-payment-failed.handler';
@@ -11,7 +11,7 @@ import { Transactional } from 'typeorm-transactional';
 @Injectable()
 export class EventHandlerMapService {
     constructor(
-        private readonly userRegisterService: SaleUserRegisterService,
+        private readonly userRegisteredService: UserRegisteredService,
         private readonly orderBilledService: OrderBilledService,
         private readonly orderRefundService: OrderRefundService,
         private readonly orderPaymentFailedService: OrderPaymentFailedService,
@@ -53,7 +53,7 @@ export class EventHandlerMapService {
     }
 
     async handleUserRegistered(payload: UserRegisteredMQEventPayload) {
-        await this.userRegisterService.handle(payload);
+        await this.userRegisteredService.handle(payload);
     }
 
     async handleOrderBilled(payload: OrderBilledMQEventPayload) {

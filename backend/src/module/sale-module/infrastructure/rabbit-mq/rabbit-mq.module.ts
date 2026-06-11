@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { RabbitMQService } from './rabbit-mq.service';
 import { EventHandlerMapService } from './event-handler.map.service';
 import { RabbitMQConsumerInitializer } from './rabbit-mq-consumer-initializer';
-import { UserRegisterService } from '../../feature/user/user-register/user-register.handler';
+import { UserRegisteredService } from '../../feature/user/user-registered/user-registered.handler';
 import { OrderBilledService } from '../../feature/order/order-billed/order-billed.handler';
 import { OrderRefundService } from '../../feature/order/order-refund/order-refund.handler';
 import { OrderPaymentFailedService } from '../../feature/order/order-payment-failed/order-payment-failed.handler';
@@ -16,7 +16,7 @@ import { OrderRepository } from '../repository/order.repository';
         RabbitMQService,
         RabbitMQConsumerInitializer,
         EventHandlerMapService,
-        UserRegisterService,
+        UserRegisteredService,
         OrderBilledService,
         OrderRefundService,
         OrderPaymentFailedService,

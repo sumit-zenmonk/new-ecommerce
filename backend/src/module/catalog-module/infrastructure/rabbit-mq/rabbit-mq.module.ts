@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { RabbitMQService } from './rabbit-mq.service';
 import { EventHandlerMapService } from './event-handler.map.service';
 import { RabbitMQConsumerInitializer } from './rabbit-mq-consumer-initializer';
-import { UserRegisterService } from '../../feature/user/user-register/user-register.handler';
+import { UserRegisteredService } from '../../feature/user/user-registered/user-registered.handler';
 import { InboxRepository } from '../repository/inbox.repository';
 import { UserRepository } from '../repository/user.repository';
 
@@ -11,7 +11,7 @@ import { UserRepository } from '../repository/user.repository';
         RabbitMQService,
         RabbitMQConsumerInitializer,
         EventHandlerMapService,
-        UserRegisterService,
+        UserRegisteredService,
         InboxRepository,
         UserRepository,
     ],

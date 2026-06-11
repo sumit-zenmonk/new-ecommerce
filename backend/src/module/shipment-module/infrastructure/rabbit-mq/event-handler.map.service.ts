@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRegisteredMQEventPayload, OrderPlacedMQEventPayload, OrderBilledMQEventPayload, ShipmentEventPayload, ShipmentEventHandlerMap } from './rabbit-mq.type';
-import { UserRegisterService as ShipmentUserRegisterService } from 'src/module/shipment-module/feature/user/user-register/user-register.handler';
+import { UserRegisteredService } from 'src/module/shipment-module/feature/user/user-registered/user-registered.handler';
 import { OrderPlacedService } from 'src/module/shipment-module/feature/order/order-placed/order-placed.handler';
 import { OrderBilledService } from 'src/module/shipment-module/feature/order/order-billed/order-billed.handler';
 import { InboxRepository } from '../repository/inbox.repository';
@@ -9,7 +9,7 @@ import { Transactional } from 'typeorm-transactional';
 @Injectable()
 export class EventHandlerMapService {
     constructor(
-        private readonly userRegisterService: ShipmentUserRegisterService,
+        private readonly userRegisteredService: UserRegisteredService,
         private readonly orderPlacedService: OrderPlacedService,
         private readonly orderBilledService: OrderBilledService,
         private readonly inboxRepository: InboxRepository,
@@ -45,7 +45,7 @@ export class EventHandlerMapService {
     }
 
     async handleUserRegistered(payload: UserRegisteredMQEventPayload) {
-        await this.userRegisterService.handle(payload);
+        await this.userRegisteredService.handle(payload);
     }
 
     async handleOrderPlaced(payload: OrderPlacedMQEventPayload) {

@@ -4,7 +4,7 @@ import { UserRepository } from "src/module/shipment-module/infrastructure/reposi
 import { Transactional } from "typeorm-transactional";
 
 @Injectable()
-export class UserRegisterService {
+export class UserRegisteredService {
     constructor(
         private readonly userRepository: UserRepository,
     ) { }
