@@ -11,7 +11,10 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
     private isConnecting = false;
     private isClosing = false;
 
+    // Queue Listing
     private readonly CATALOG_QUEUE = 'catalog.queue';
+
+    // Exchange Listing
     private readonly USER_EXCHANGE = 'user.exchange';
 
     async onModuleInit() {
