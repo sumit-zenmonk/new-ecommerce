@@ -51,7 +51,6 @@ export class OrderPlacedService {
 
                 // throw new BadRequestException("Balance is low . Please do add amount");
 
-                // create outbox entry (fanout - no routing key)
                 await this.outboxRepository.createOutboxEntry({
                     exchange_name: this.BILLING_EXCHANGE,
                     event_name: 'payment.failed',
@@ -82,7 +81,6 @@ export class OrderPlacedService {
                 description: `Paid for order '${order.uuid}'`,
             });
 
-            // create outbox entry (fanout - no routing key)
             await this.outboxRepository.createOutboxEntry({
                 exchange_name: this.BILLING_EXCHANGE,
                 event_name: 'order.billed',

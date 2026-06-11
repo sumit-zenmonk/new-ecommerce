@@ -43,7 +43,6 @@ export class CreateOrderService {
 
         await this.orderRepository.updateOrderStatus(order.uuid, OrderStatusEnum.PLACED);
 
-        // create outbox entry (fanout - no routing key)
         await this.outboxRepository.createOutboxEntry({
             exchange_name: this.SALE_EXCHANGE,
             event_name: 'order.placed',

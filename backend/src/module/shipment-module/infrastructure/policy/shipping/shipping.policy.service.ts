@@ -19,11 +19,12 @@ export class ShippingPolicyService extends PolicyClass {
 
     handleGetPolicy(key: string) {
         const shippingPolicy = this.policyMap.get(key);
-        if (shippingPolicy) {
-            return shippingPolicy;
+        if (!shippingPolicy) {
+            console.log(`ShippingPolicy with key ${key} not found`);
+            return;
         }
-        console.log(`ShippingPolicy with key ${key} not found`);
-        return;
+
+        return shippingPolicy;
     }
 
     handleRemovePolicy(key: string) {
