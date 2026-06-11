@@ -6,6 +6,7 @@ import { BcryptService } from "src/common/infrastruture/services/bcrypt.service"
 import { JwtHelperService } from "src/module/user-module/infrastructure/services/jwt.service";
 import { OutboxRepository } from "src/module/user-module/infrastructure/repository/outbox.repository";
 import { Transactional } from "typeorm-transactional";
+import { UserPublishEventEnum } from "src/module/user-module/domain/user/user.event";
 
 @Injectable()
 export class RegisterUserService {
@@ -48,7 +49,7 @@ export class RegisterUserService {
         await this.outboxRepository.createOutboxEntry({
             exchange_name: this.USER_EXCHANGE,
             routing_key: '',
-            event_name: 'user.registered',
+            event_name: UserPublishEventEnum.USER_REGISTERED,
             message_payload: RegisteredUser,
         });
 

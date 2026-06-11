@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { OrderShippingLabelCreatedMQEventPayload, ShippingPolicyType } from "./shipping.policy.type";
 import { OutboxRepository } from "../../repository/outbox.repository";
 import { PolicyClass } from "src/common/infrastruture/policy/policy.abstract";
+import { OrderPublishEventEnum } from "src/module/shipment-module/domain/order/order.event";
 
 @Injectable()
 export class ShippingPolicyService extends PolicyClass {
@@ -37,7 +38,7 @@ export class ShippingPolicyService extends PolicyClass {
         if (policy && policy.is_billed && policy.is_placed) {
             await this.outboxRepository.createOutboxEntry({
                 exchange_name: this.SHIPPING_EXCHANGE,
-                event_name: 'shipping.label.created',
+                event_name: OrderPublishEventEnum.SHIPPING_LABEL_ORDERED,
                 message_payload: {
                     order_uuid: policy.data.order_uuid,
                     customer_uuid: policy.data.customer_uuid,

@@ -7,6 +7,7 @@ import { WalletRepository } from "src/module/billing-module/infrastructure/repos
 import { WalletHistoryRepository } from "src/module/billing-module/infrastructure/repository/wallet.history.repository";
 import { OutboxRepository } from "src/module/billing-module/infrastructure/repository/outbox.repository";
 import type { OrderRefundMQEventPayload } from "src/module/billing-module/infrastructure/rabbit-mq/rabbit-mq.type";
+import { OrderPublishEventEnum } from "src/module/billing-module/domain/order/order.event";
 
 @Injectable()
 export class OrderRefundService {
@@ -50,7 +51,7 @@ export class OrderRefundService {
 
         await this.outboxRepository.createOutboxEntry({
             exchange_name: this.BILLING_EXCHANGE,
-            event_name: 'order.refund',
+            event_name: OrderPublishEventEnum.ORDER_REFUND,
             message_payload: {
                 order_uuid: order.order_uuid,
                 customer_uuid: order.customer_uuid,

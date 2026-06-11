@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { runOnTransactionCommit, Transactional } from "typeorm-transactional";
-import { UserEntity } from "src/module/user-module/domain/user/user.entity";
 import { OrderPlacedDto } from "./order-placed.dto";
 import { WalletRepository } from "src/module/billing-module/infrastructure/repository/wallet.repository";
 import { WalletHistoryRepository } from "src/module/billing-module/infrastructure/repository/wallet.history.repository";
@@ -8,6 +7,7 @@ import { OrderRepository } from "src/module/billing-module/infrastructure/reposi
 import { OutboxRepository } from "src/module/billing-module/infrastructure/repository/outbox.repository";
 import { OrderPaymentStatusEnum } from "src/module/billing-module/domain/order/order.enum";
 import { WalletHistoryTypeEnum } from "src/module/billing-module/domain/wallet-history/wallet.enum";
+import { OrderPublishEventEnum } from "src/module/billing-module/domain/order/order.event";
 
 @Injectable()
 export class OrderPlacedService {
@@ -53,7 +53,7 @@ export class OrderPlacedService {
 
                 await this.outboxRepository.createOutboxEntry({
                     exchange_name: this.BILLING_EXCHANGE,
-                    event_name: 'payment.failed',
+                    event_name: OrderPublishEventEnum.PAYMENT_FAILED,
                     message_payload: {
                         order_uuid,
                         customer_uuid: customer_uuid,
@@ -83,7 +83,7 @@ export class OrderPlacedService {
 
             await this.outboxRepository.createOutboxEntry({
                 exchange_name: this.BILLING_EXCHANGE,
-                event_name: 'order.billed',
+                event_name: OrderPublishEventEnum.ORDER_BILLED,
                 message_payload: {
                     order_uuid,
                     customer_uuid: customer_uuid,

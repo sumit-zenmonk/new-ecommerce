@@ -6,6 +6,7 @@ import { OutboxRepository } from "src/module/shipment-module/infrastructure/repo
 import { runOnTransactionCommit, Transactional } from "typeorm-transactional";
 import type { OrderBilledMQEventPayload } from "src/module/shipment-module/infrastructure/rabbit-mq/rabbit-mq.type";
 import { ShippingPolicyService } from "src/module/shipment-module/infrastructure/policy/shipping/shipping.policy.service";
+import { OrderPublishEventEnum } from "src/module/shipment-module/domain/order/order.event";
 
 @Injectable()
 export class OrderBilledService {
@@ -42,7 +43,7 @@ export class OrderBilledService {
         } else {
             await this.outboxRepository.createOutboxEntry({
                 exchange_name: this.SHIPPING_EXCHANGE,
-                event_name: 'back.ordered',
+                event_name: OrderPublishEventEnum.BACK_ORDER,
                 message_payload: {
                     order_uuid: order.order_uuid,
                     customer_uuid: order.customer_uuid,
