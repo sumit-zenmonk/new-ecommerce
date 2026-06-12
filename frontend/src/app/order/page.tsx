@@ -158,6 +158,8 @@ export default function OrderPage() {
                                         </Typography>
 
                                         {
+                                            order?.order_status == OrderStatusEnum.PAYMENT_FAILED
+                                            &&
                                             order?.payment_status == OrderPaymentStatusEnum.FAILED
                                             &&
                                             <Button onDoubleClick={() => handlePay(order.uuid)}>
