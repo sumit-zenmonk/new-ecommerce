@@ -227,7 +227,7 @@ export class RabbitMQService implements OnModuleInit, OnModuleDestroy {
                 },
             });
 
-            this.logger.log(`Sent => exchange = ${exchange} | key = ${routingKey}`);
+            this.logger.debug(`Sent => exchange = ${exchange} | key = ${routingKey}`);
         } catch (error) {
             this.logger.error("Send error:", error);
         }
